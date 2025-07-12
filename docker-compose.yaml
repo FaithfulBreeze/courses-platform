@@ -1,0 +1,19 @@
+
+services:
+  redis:
+    # Use the official Redis image from Docker Hub
+    image: 'redis:latest'
+    
+    # Name for the container
+    container_name: my-redis-container
+    
+    # Always restart the container if it stops
+    restart: always
+    
+    # Map port 6379 on the host to port 6379 in the container
+    ports:
+      - '6379:6379'
+      
+    # Mount a local directory to persist Redis data
+    volumes:
+      - ./redis-data:/data
