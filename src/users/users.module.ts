@@ -6,12 +6,19 @@ import { User } from './entities/user.entity';
 import { BcryptService } from 'src/bcrypt/bcrypt.service';
 import { UsersController } from './users.controller';
 import { JwtService } from '@nestjs/jwt';
-import { CoursesModule } from 'src/courses/courses.module';
+import { Queries } from './queries';
+import { CqrsModule } from '@nestjs/cqrs';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User]), CoursesModule],
-  providers: [UsersResolver, UsersService, BcryptService, JwtService],
+  imports: [TypeOrmModule.forFeature([User]), CqrsModule],
+  providers: [
+    UsersResolver,
+    UsersService,
+    BcryptService,
+    JwtService,
+    ...Queries,
+  ],
   controllers: [UsersController],
-  exports: [TypeOrmModule, UsersService]
+  exports: [TypeOrmModule, UsersService],
 })
 export class UsersModule {}

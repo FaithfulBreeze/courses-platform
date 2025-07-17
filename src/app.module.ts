@@ -1,10 +1,10 @@
-import { Module } from '@nestjs/common';
+import { Module, OnModuleInit } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { CoursesModule } from './courses/courses.module';
 import { ReviewsModule } from './reviews/reviews.module';
 import { UsersModule } from './users/users.module';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { InjectDataSource, TypeOrmModule } from '@nestjs/typeorm';
 import { LessonsModule } from './lessons/lessons.module';
 import { VercelCdnService } from './vercel-cdn/vercel-cdn.service';
 import { ConfigModule } from '@nestjs/config';
@@ -13,6 +13,9 @@ import { AuthModule } from './auth/auth.module';
 import { BcryptService } from './bcrypt/bcrypt.service';
 import { BullModule } from '@nestjs/bullmq';
 import { join } from 'path';
+import { seed } from 'test/seed';
+import { DataSource } from 'typeorm';
+import { environments } from './common/constants/environments';
 @Module({
   imports: [
     GraphQLModule.forRoot<ApolloDriverConfig>({
@@ -51,4 +54,10 @@ import { join } from 'path';
   controllers: [],
   providers: [VercelCdnService, NodemailerService, BcryptService],
 })
-export class AppModule {}
+export class AppModule implements OnModuleInit {
+  constructor(@InjectDataSource() private readonly dataSource: DataSource) {}
+  onModuleInit() {
+    if (process.env.NODE_ENV === environments.DEVELOPMENT)
+      seed(this.dataSource);
+  }
+}
