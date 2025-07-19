@@ -11,13 +11,7 @@ import { BcryptService } from 'src/bcrypt/bcrypt.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Course]), UsersModule],
-  providers: [
-    CoursesResolver,
-    CoursesService,
-    JwtService,
-    BcryptService,
-    ...Queries,
-  ],
+  providers: [CoursesResolver, CoursesService, JwtService, BcryptService, ...Queries],
   controllers: [CoursesController],
   exports: [TypeOrmModule, CoursesService],
 })

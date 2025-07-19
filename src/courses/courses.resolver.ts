@@ -1,11 +1,4 @@
-import {
-  Resolver,
-  Query,
-  Args,
-  Int,
-  ResolveField,
-  Parent,
-} from '@nestjs/graphql';
+import { Resolver, Query, Args, Int, ResolveField, Parent } from '@nestjs/graphql';
 import { CoursesService } from './courses.service';
 import { Course } from './entities/course.entity';
 import { User } from 'src/users/entities/user.entity';

@@ -31,6 +31,7 @@ export class AppendCookieInterceptor implements NestInterceptor {
           const foundUser = await manager.findOne(User, {
             where: { id: user.id },
           });
+
           if (!foundUser) throw new BadRequestException('User not found');
           foundUser.accessToken = await this.encoderService.encode(token);
           manager.save(foundUser);

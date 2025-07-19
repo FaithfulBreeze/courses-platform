@@ -8,9 +8,7 @@ export class FindUserByIdQuery {
 }
 
 @QueryHandler(FindUserByIdQuery)
-export class FindUserByIdQueryHandler
-  implements IQueryHandler<FindUserByIdQuery, User | null>
-{
+export class FindUserByIdQueryHandler implements IQueryHandler<FindUserByIdQuery, User | null> {
   constructor(@InjectDataSource() private readonly dataSource: DataSource) {}
   execute(query: FindUserByIdQuery) {
     return this.dataSource.manager.findOne(User, {

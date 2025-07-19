@@ -20,6 +20,7 @@ export class CoursesService {
       ...createCourseDto,
       owner: { id: userId },
     });
+
     return this.coursesRepository.save(createdCourse);
   }
 

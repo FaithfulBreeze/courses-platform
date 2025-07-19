@@ -25,7 +25,9 @@ export class FindUserPurchasedCoursesQueryHandler
         purchasedCourses: true,
       },
     });
+
     if (!user) return [];
+
     return user.purchasedCourses;
   }
 }

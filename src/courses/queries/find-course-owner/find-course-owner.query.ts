@@ -8,9 +8,7 @@ export class FindCourseOwner {
 }
 
 @QueryHandler(FindCourseOwner)
-export class FindCourseOwnerHandler
-  implements IQueryHandler<FindCourseOwner, User | null>
-{
+export class FindCourseOwnerHandler implements IQueryHandler<FindCourseOwner, User | null> {
   constructor(@InjectDataSource() private readonly dataSource: DataSource) {}
   execute(query: FindCourseOwner) {
     return this.dataSource.manager.findOne(User, {
