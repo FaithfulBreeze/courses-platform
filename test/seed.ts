@@ -50,17 +50,14 @@ const createCourses = async (manager: EntityManager) => {
   const course2 = manager.create(Course, {
     owner: janeDoe,
     name: 'Vue.js Masterclass',
-    description:
-      'Master Vue.js framework to build reactive and scalable frontend applications.',
-    thumbnail:
-      'https://blog.geekhunter.com.br/wp-content/uploads/2019/12/vue-js.png',
+    description: 'Master Vue.js framework to build reactive and scalable frontend applications.',
+    thumbnail: 'https://blog.geekhunter.com.br/wp-content/uploads/2019/12/vue-js.png',
   });
 
   const course3 = manager.create(Course, {
     owner: janeDoe,
     name: 'Angular, the Google framework',
-    description:
-      'The robust, opiniated and enterprise focused framework built by google.',
+    description: 'The robust, opiniated and enterprise focused framework built by google.',
     thumbnail:
       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTeNhddUQInfcuwztyqws-yWCaGB-y1gzJmg&s',
   });
@@ -69,15 +66,13 @@ const createCourses = async (manager: EntityManager) => {
     owner: janeDoe,
     name: 'Postgres, the only relational database you need',
     description: 'Store your data in a robust an reliable database',
-    thumbnail:
-      'https://aembit.io/wp-content/uploads/2023/09/The-Strange-World-of-Postgres-TLS.png',
+    thumbnail: 'https://aembit.io/wp-content/uploads/2023/09/The-Strange-World-of-Postgres-TLS.png',
   });
 
   const course5 = manager.create(Course, {
     owner: janeDoe,
     name: 'Graphql masterclass',
-    description:
-      'No more than you need, ask what you want, receive what you expect.',
+    description: 'No more than you need, ask what you want, receive what you expect.',
     thumbnail:
       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSA3_xJ6WRWOrac_NwofY5bIFxE6Q7r0b-5Dg&s',
   });
@@ -85,8 +80,7 @@ const createCourses = async (manager: EntityManager) => {
   const course6 = manager.create(Course, {
     owner: janeDoe,
     name: 'Nestjs for noobs',
-    description:
-      'This course will make you go from noob to high skilled Nestjs developer.',
+    description: 'This course will make you go from noob to high skilled Nestjs developer.',
     thumbnail: 'https://nestjs.com/img/nest-og.png',
   });
 
@@ -98,19 +92,12 @@ const createCourses = async (manager: EntityManager) => {
       'https://repository-images.githubusercontent.com/69495170/8125e100-61bc-11e9-8d9f-eb01f522f962',
   });
 
-  await manager.save([
-    course1,
-    course2,
-    course3,
-    course4,
-    course5,
-    course6,
-    course7,
-  ]);
+  await manager.save([course1, course2, course3, course4, course5, course6, course7]);
 };
 
 const updateUsers = async (manager: EntityManager) => {
   const johnDoe = await manager.findOne(User, { where: { id: 1 } });
+
   if (!johnDoe) return;
   const janeDoeCourses = await manager.find(Course, {
     relations: { owner: true },
@@ -130,8 +117,7 @@ const createLessons = async (manager: EntityManager) => {
   const lesson1 = manager.create(Lesson, {
     courseId: 1,
     title: 'Understanding core concepts',
-    description:
-      'In this lesson we will understand the fundamentals of the React Native',
+    description: 'In this lesson we will understand the fundamentals of the React Native',
     videoUrl:
       'https://apjakoxmjctsnnmw.public.blob.vercel-storage.com/Grava%C3%A7%C3%A3o%20de%20tela%20de%202025-07-05%2000-16-46.webm',
     videoThumbnail:
