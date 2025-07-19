@@ -11,11 +11,11 @@ export class Lesson {
 
   @Field()
   @Column()
-  videoUrl: string;
+  url: string;
 
   @Field()
   @Column()
-  videoThumbnail: string;
+  thumbnail: string;
 
   @Field()
   @Column()
@@ -24,6 +24,10 @@ export class Lesson {
   @Field()
   @Column()
   description: string;
+
+  @Field({ nullable: true })
+  @Column({ nullable: true })
+  duration?: string;
 
   @Field(() => Course)
   @ManyToOne(() => Course, (course) => course.lessons)

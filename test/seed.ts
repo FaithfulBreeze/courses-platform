@@ -41,7 +41,7 @@ const createCourses = async (manager: EntityManager) => {
 
   const course1 = manager.create(Course, {
     owner: janeDoe,
-    name: 'React Native in a nutshell',
+    title: 'React Native in a nutshell',
     description: 'Learn today how to use react native and create awesome apps.',
     thumbnail:
       'https://4409803.fs1.hubspotusercontent-na1.net/hubfs/4409803/react-native%20%281%29.png',
@@ -49,14 +49,14 @@ const createCourses = async (manager: EntityManager) => {
 
   const course2 = manager.create(Course, {
     owner: janeDoe,
-    name: 'Vue.js Masterclass',
+    title: 'Vue.js Masterclass',
     description: 'Master Vue.js framework to build reactive and scalable frontend applications.',
     thumbnail: 'https://blog.geekhunter.com.br/wp-content/uploads/2019/12/vue-js.png',
   });
 
   const course3 = manager.create(Course, {
     owner: janeDoe,
-    name: 'Angular, the Google framework',
+    title: 'Angular, the Google framework',
     description: 'The robust, opiniated and enterprise focused framework built by google.',
     thumbnail:
       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTeNhddUQInfcuwztyqws-yWCaGB-y1gzJmg&s',
@@ -64,14 +64,14 @@ const createCourses = async (manager: EntityManager) => {
 
   const course4 = manager.create(Course, {
     owner: janeDoe,
-    name: 'Postgres, the only relational database you need',
+    title: 'Postgres, the only relational database you need',
     description: 'Store your data in a robust an reliable database',
     thumbnail: 'https://aembit.io/wp-content/uploads/2023/09/The-Strange-World-of-Postgres-TLS.png',
   });
 
   const course5 = manager.create(Course, {
     owner: janeDoe,
-    name: 'Graphql masterclass',
+    title: 'Graphql masterclass',
     description: 'No more than you need, ask what you want, receive what you expect.',
     thumbnail:
       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSA3_xJ6WRWOrac_NwofY5bIFxE6Q7r0b-5Dg&s',
@@ -79,14 +79,14 @@ const createCourses = async (manager: EntityManager) => {
 
   const course6 = manager.create(Course, {
     owner: janeDoe,
-    name: 'Nestjs for noobs',
+    title: 'Nestjs for noobs',
     description: 'This course will make you go from noob to high skilled Nestjs developer.',
     thumbnail: 'https://nestjs.com/img/nest-og.png',
   });
 
   const course7 = manager.create(Course, {
     owner: janeDoe,
-    name: 'Fastify, the lightweight easy setup framework',
+    title: 'Fastify, the lightweight easy setup framework',
     description: 'Learn how to easily create apis with Fastify Framework',
     thumbnail:
       'https://repository-images.githubusercontent.com/69495170/8125e100-61bc-11e9-8d9f-eb01f522f962',
@@ -118,9 +118,8 @@ const createLessons = async (manager: EntityManager) => {
     courseId: 1,
     title: 'Understanding core concepts',
     description: 'In this lesson we will understand the fundamentals of the React Native',
-    videoUrl:
-      'https://apjakoxmjctsnnmw.public.blob.vercel-storage.com/Grava%C3%A7%C3%A3o%20de%20tela%20de%202025-07-05%2000-16-46.webm',
-    videoThumbnail:
+    url: 'https://apjakoxmjctsnnmw.public.blob.vercel-storage.com/Grava%C3%A7%C3%A3o%20de%20tela%20de%202025-07-05%2000-16-46.webm',
+    thumbnail:
       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPu6kSUxjLXBDW3_j0XIQTihfo4WRs1fC8Zg&s',
   });
 

@@ -21,7 +21,7 @@ export class Course {
 
   @Field()
   @Column()
-  name: string;
+  title: string;
 
   @Field()
   @Column()
@@ -30,6 +30,10 @@ export class Course {
   @Field()
   @Column()
   thumbnail: string;
+
+  @Field({ nullable: true })
+  @Column({ nullable: true })
+  duration?: string;
 
   @Field()
   @ManyToOne(() => User, (owner) => owner.createdCourses)

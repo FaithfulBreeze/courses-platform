@@ -19,7 +19,7 @@ export class CreateLessonProcessor extends WorkerHost {
   async process(job: Job) {
     const { createLessonDto, userId, video, thumbnail } = job.data;
 
-    const [videoUrl, videoThumbnail] = await Promise.all([
+    const [cdnVideoUrl, cdnVideoThumbnail] = await Promise.all([
       await this.cdnService.store({
         ...video,
         content: Buffer.from(video.content),
@@ -34,16 +34,16 @@ export class CreateLessonProcessor extends WorkerHost {
       const lesson = manager.create(Lesson, {
         ...createLessonDto,
         userId,
-        videoUrl,
-        videoThumbnail,
+        url: cdnVideoUrl,
+        thumbnail: cdnVideoThumbnail,
       });
 
       try {
         await manager.save(lesson);
         this.eventBus.publish(new LessonCreatedEvent(lesson, userId));
       } catch (error) {
-        this.cdnService.delete(videoUrl);
-        this.cdnService.delete(videoThumbnail);
+        this.cdnService.delete(cdnVideoUrl);
+        this.cdnService.delete(cdnVideoThumbnail);
         throw error;
       }
     });

@@ -23,6 +23,7 @@ import { environments } from './common/constants/environments';
       driver: ApolloDriver,
       playground: true,
       autoSchemaFile: join(process.cwd(), './schema.gql'),
+      hideSchemaDetailsFromClientErrors: true,
     }),
     TypeOrmModule.forRoot({
       type: 'sqlite',
