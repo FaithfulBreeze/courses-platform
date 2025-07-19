@@ -17,12 +17,6 @@ import { seed } from 'test/seed';
 import { DataSource } from 'typeorm';
 import { environments } from './common/constants/environments';
 
-
-
-
-
-
-
 @Module({
   imports: [
     GraphQLModule.forRoot<ApolloDriverConfig>({
