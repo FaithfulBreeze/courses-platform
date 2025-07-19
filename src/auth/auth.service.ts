@@ -41,4 +41,23 @@ export class AuthService {
       ),
     };
   }
+
+  async refresh(id: number) {
+    const foundUser = await this.userRepository.findOne({
+      where: { id },
+    });
+
+    if (!foundUser) throw new NotFoundException('User not found');
+
+    const { password, ...user } = foundUser;
+
+    return {
+      user,
+      message: 'Refresh successful',
+      token: this.jwtService.sign(
+        { id: user.id },
+        { secret: this.configService.get<string>('JWT_SECRET') },
+      ),
+    };
+  }
 }
