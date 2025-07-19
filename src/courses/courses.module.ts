@@ -7,10 +7,17 @@ import { CoursesController } from './courses.controller';
 import { JwtService } from '@nestjs/jwt';
 import { UsersModule } from 'src/users/users.module';
 import { Queries } from './queries';
+import { BcryptService } from 'src/bcrypt/bcrypt.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Course]), UsersModule],
-  providers: [CoursesResolver, CoursesService, JwtService, ...Queries],
+  providers: [
+    CoursesResolver,
+    CoursesService,
+    JwtService,
+    BcryptService,
+    ...Queries,
+  ],
   controllers: [CoursesController],
   exports: [TypeOrmModule, CoursesService],
 })

@@ -32,6 +32,9 @@ export class User {
   @Column({ nullable: true })
   avatarUrl?: string;
 
+  @Column({ nullable: true })
+  accessToken?: string;
+
   @Field(() => [Review])
   @OneToMany(() => Review, (review) => review.reviewer)
   reviews: Review[];
