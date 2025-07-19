@@ -23,6 +23,7 @@ export class LessonCreatedHandler implements IEventHandler<LessonCreatedEvent> {
         email: true,
       },
     });
+
     if (!foundUser) return;
 
     this.mailerService.sendMail({

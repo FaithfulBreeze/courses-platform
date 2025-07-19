@@ -26,14 +26,15 @@ export class LessonsService {
     thumbnail: { content: Buffer; filename: string },
   ) {
     const isValid = await this.validateLessonCreation(createLessonDto, userId);
-    if (!isValid)
-      throw new BadRequestException('Invalid lesson creation request');
+
+    if (!isValid) throw new BadRequestException('Invalid lesson creation request');
     const job = await this.queue.add('create-lesson', {
       createLessonDto,
       userId,
       video,
       thumbnail,
     });
+
     return {
       message: 'Your lesson creation request is being processed',
       job: job.id,
@@ -56,16 +57,10 @@ export class LessonsService {
     return `This action removes a #${id} lesson`;
   }
 
-  private async validateLessonCreation(
-    createLessonDto: CreateLessonDto,
-    userId: number,
-  ) {
-    const course = await this.getCourseByIdAndUserId(
-      createLessonDto.courseId,
-      userId,
-    );
-    if (!course)
-      await this.handleCourseNotFound(createLessonDto.courseId, userId);
+  private async validateLessonCreation(createLessonDto: CreateLessonDto, userId: number) {
+    const course = await this.getCourseByIdAndUserId(createLessonDto.courseId, userId);
+
+    if (!course) await this.handleCourseNotFound(createLessonDto.courseId, userId);
 
     return course ? true : false;
   }
@@ -83,6 +78,7 @@ export class LessonsService {
     const user = await this.lessonsRepository.manager.findOne(User, {
       where: { id: userId },
     });
+
     if (!user) return;
     this.mailerService.sendMail({
       addressee: user.email,

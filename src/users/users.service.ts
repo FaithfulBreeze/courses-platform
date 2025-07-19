@@ -20,15 +20,15 @@ export class UsersService {
       const foundEmail = await manager.findOne(User, {
         where: { email: createUserInput.email },
       });
+
       if (foundEmail) throw new ConflictException('Email already in use');
-      const hashedPassword = await this.bcryptService.encode(
-        createUserInput.password,
-      );
+      const hashedPassword = await this.bcryptService.encode(createUserInput.password);
       const createdUser = manager.create(User, {
         ...createUserInput,
         password: hashedPassword,
       });
       await manager.save(createdUser);
+
       return { message: 'User created successfully', id: createdUser.id };
     });
   }

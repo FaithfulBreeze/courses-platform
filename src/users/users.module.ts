@@ -11,13 +11,7 @@ import { CqrsModule } from '@nestjs/cqrs';
 
 @Module({
   imports: [TypeOrmModule.forFeature([User]), CqrsModule],
-  providers: [
-    UsersResolver,
-    UsersService,
-    BcryptService,
-    JwtService,
-    ...Queries,
-  ],
+  providers: [UsersResolver, UsersService, BcryptService, JwtService, ...Queries],
   controllers: [UsersController],
   exports: [TypeOrmModule, UsersService],
 })

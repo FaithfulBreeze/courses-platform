@@ -57,16 +57,12 @@ type Mutation {
 }
 
 input CreateReviewInput {
-  """
-  Example field (placeholder)
-  """
+  """Example field (placeholder)"""
   exampleField: Int!
 }
 
 input UpdateReviewInput {
-  """
-  Example field (placeholder)
-  """
+  """Example field (placeholder)"""
   exampleField: Int
   id: Int!
 }

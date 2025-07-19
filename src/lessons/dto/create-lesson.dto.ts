@@ -1,10 +1,4 @@
-import {
-  IsInt,
-  IsNotEmpty,
-  IsNumberString,
-  IsString,
-  Length,
-} from 'class-validator';
+import { IsInt, IsNotEmpty, IsNumberString, IsString, Length } from 'class-validator';
 
 export class CreateLessonDto {
   @IsString()

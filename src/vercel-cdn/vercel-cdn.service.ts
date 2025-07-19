@@ -8,9 +8,7 @@ import { File } from 'src/common/interfaces/file.interface';
 export class VercelCdnService implements CdnService {
   private token: string;
   constructor(private readonly configService: ConfigService) {
-    this.token = this.configService.getOrThrow<string>(
-      'COURSE_PLATFORM_STORE_READ_WRITE_TOKEN',
-    );
+    this.token = this.configService.getOrThrow<string>('COURSE_PLATFORM_STORE_READ_WRITE_TOKEN');
   }
 
   delete(identifier: string): void {

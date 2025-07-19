@@ -1,9 +1,4 @@
-import {
-  CanActivate,
-  ExecutionContext,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { InjectDataSource } from '@nestjs/typeorm';
@@ -25,6 +20,7 @@ export class AuthGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
     const cookies = request.cookies;
     const jwtToken = cookies.jwt;
+
     if (!jwtToken) throw new UnauthorizedException();
     let id: number;
     try {
@@ -39,19 +35,12 @@ export class AuthGuard implements CanActivate {
 
       if (!foundUser) throw new UnauthorizedException('User not found');
       if (!foundUser.accessToken)
-        throw new UnauthorizedException(
-          'You must be logged to access this resource',
-        );
+        throw new UnauthorizedException('You must be logged to access this resource');
 
-      const match = await this.encoderService.compare(
-        foundUser.accessToken,
-        jwtToken,
-      );
+      const match = await this.encoderService.compare(foundUser.accessToken, jwtToken);
 
       if (!match) {
-        throw new UnauthorizedException(
-          'You have been disconnected from this device',
-        );
+        throw new UnauthorizedException('You have been disconnected from this device');
       }
 
       id = data.id;
@@ -59,6 +48,7 @@ export class AuthGuard implements CanActivate {
       throw new UnauthorizedException(error.message);
     }
     request.user = id;
+
     return true;
   }
 }

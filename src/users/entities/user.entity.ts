@@ -1,14 +1,7 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
 import { Course } from 'src/courses/entities/course.entity';
 import { Review } from 'src/reviews/entities/review.entity';
-import {
-  Column,
-  Entity,
-  JoinTable,
-  ManyToMany,
-  OneToMany,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @ObjectType()
 @Entity()

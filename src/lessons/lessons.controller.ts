@@ -42,6 +42,7 @@ export class LessonsController {
       content: files.thumbnail[0].buffer,
       filename: files.thumbnail[0].originalname,
     };
+
     return this.lessonsService.create(createLessonDto, id, video, thumbnail);
   }
 }
