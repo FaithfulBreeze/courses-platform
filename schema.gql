@@ -42,10 +42,10 @@ type Course {
 type Query {
   courses: [Course!]!
   course(id: Int!): Course!
-  reviews: [Review!]!
-  review(id: Int!): Review!
   users: [User!]!
   user(id: Int!): User!
+  reviews: [Review!]!
+  review(id: Int!): Review!
   lessons: [Lesson!]!
   lesson(id: Int!): Lesson!
 }
@@ -54,16 +54,19 @@ type Mutation {
   createReview(createReviewInput: CreateReviewInput!): Review!
   updateReview(updateReviewInput: UpdateReviewInput!): Review!
   removeReview(id: Int!): Review!
-  removeUser(id: Int!): User!
 }
 
 input CreateReviewInput {
-  """Example field (placeholder)"""
+  """
+  Example field (placeholder)
+  """
   exampleField: Int!
 }
 
 input UpdateReviewInput {
-  """Example field (placeholder)"""
+  """
+  Example field (placeholder)
+  """
   exampleField: Int
   id: Int!
 }

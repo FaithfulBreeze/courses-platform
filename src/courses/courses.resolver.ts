@@ -1,4 +1,11 @@
-import { Resolver, Query, Args, Int, ResolveField, Parent } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  Args,
+  Int,
+  ResolveField,
+  Parent,
+} from '@nestjs/graphql';
 import { CoursesService } from './courses.service';
 import { Course } from './entities/course.entity';
 import { User } from 'src/users/entities/user.entity';
@@ -6,7 +13,10 @@ import { UsersService } from 'src/users/users.service';
 
 @Resolver(() => Course)
 export class CoursesResolver {
-  constructor(private readonly coursesService: CoursesService, private readonly usersService: UsersService) {}
+  constructor(
+    private readonly coursesService: CoursesService,
+    private readonly usersService: UsersService,
+  ) {}
 
   @Query(() => [Course], { name: 'courses' })
   findAll() {
@@ -18,9 +28,8 @@ export class CoursesResolver {
     return this.coursesService.findOne(id);
   }
 
-  @ResolveField(() => User, {name: "owner"})
-  getCourseOwner(@Parent() parent: any) {
-    console.log(parent)
-    return this.usersService.findOne(1)
+  @ResolveField(() => User, { name: 'owner' })
+  findCourseOwner(@Parent() parent: Course) {
+    return this.coursesService.findCourseOwner(parent.id);
   }
 }

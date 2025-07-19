@@ -5,6 +5,7 @@ import { User } from 'src/users/entities/user.entity';
 import {
   Column,
   Entity,
+  JoinColumn,
   ManyToMany,
   ManyToOne,
   OneToMany,
@@ -32,6 +33,7 @@ export class Course {
 
   @Field()
   @ManyToOne(() => User, (owner) => owner.createdCourses)
+  @JoinColumn()
   owner: User;
 
   @Field(() => [Review])

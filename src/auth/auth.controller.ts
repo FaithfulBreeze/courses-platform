@@ -1,4 +1,10 @@
-import { Controller, HttpCode, Post, Body, UseInterceptors } from '@nestjs/common';
+import {
+  Controller,
+  HttpCode,
+  Post,
+  Body,
+  UseInterceptors,
+} from '@nestjs/common';
 import { LoginDto } from './dto/login.dto';
 import { AuthService } from './auth.service';
 import { AppendCookieInterceptor } from 'src/common/interceptors/append-cookie/append-cookie.interceptor';

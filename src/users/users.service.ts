@@ -5,11 +5,14 @@ import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { BcryptService } from 'src/bcrypt/bcrypt.service';
 import { CreateUserDto } from './dto/create-user.dto';
+import { QueryBus } from '@nestjs/cqrs';
+import { FindUserPurchasedCoursesQuery } from './queries/find-user-purchased-courses/find-user-purchased-courses.query';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User) private readonly usersRepository: Repository<User>,
+    private readonly queryBus: QueryBus,
     private readonly bcryptService: BcryptService,
   ) {}
   create(createUserInput: CreateUserDto) {
@@ -31,11 +34,15 @@ export class UsersService {
   }
 
   findAll() {
-    return this.usersRepository.find()
+    return this.usersRepository.find();
   }
 
   findOne(id: number) {
     return this.usersRepository.findOne({ where: { id } });
+  }
+
+  findUserPurchasedCourses(id: number) {
+    return this.queryBus.execute(new FindUserPurchasedCoursesQuery(id));
   }
 
   update(id: number, updateUserInput: UpdateUserInput) {
