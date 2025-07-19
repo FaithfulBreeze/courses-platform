@@ -36,16 +36,24 @@ export class AuthGuard implements CanActivate {
           id: data.id,
         },
       });
+
       if (!foundUser) throw new UnauthorizedException('User not found');
       if (!foundUser.accessToken)
         throw new UnauthorizedException(
           'You must be logged to access this resource',
         );
-      if (await this.encoderService.compare(foundUser.accessToken, jwtToken)) {
+
+      const match = await this.encoderService.compare(
+        foundUser.accessToken,
+        jwtToken,
+      );
+
+      if (!match) {
         throw new UnauthorizedException(
           'You have been disconnected from this device',
         );
       }
+
       id = data.id;
     } catch (error) {
       throw new UnauthorizedException(error.message);
