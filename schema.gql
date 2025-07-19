@@ -4,10 +4,11 @@
 
 type Lesson {
   id: Int!
-  videoUrl: String!
-  videoThumbnail: String!
+  url: String!
+  thumbnail: String!
   title: String!
   description: String!
+  duration: String
   course: Course!
 }
 
@@ -16,6 +17,7 @@ type User {
   email: String!
   password: String!
   name: String!
+  avatar: String
   reviews: [Review!]!
   purchasedCourses: [Course!]!
   createdCourses: [Course!]!
@@ -30,9 +32,10 @@ type Review {
 
 type Course {
   id: Int!
-  name: String!
+  title: String!
   description: String!
   thumbnail: String!
+  duration: String
   owner: User!
   reviews: [Review!]!
   students: [User!]!

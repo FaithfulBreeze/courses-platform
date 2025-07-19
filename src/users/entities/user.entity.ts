@@ -22,8 +22,9 @@ export class User {
   @Column()
   name: string;
 
+  @Field({ nullable: true })
   @Column({ nullable: true })
-  avatarUrl?: string;
+  avatar?: string;
 
   @Column({ nullable: true })
   accessToken?: string;
