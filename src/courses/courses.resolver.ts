@@ -2,15 +2,11 @@ import { Resolver, Query, Args, Int, ResolveField, Parent } from '@nestjs/graphq
 import { CoursesService } from './courses.service';
 import { Course } from './entities/course.entity';
 import { User } from 'src/users/entities/user.entity';
-import { UsersService } from 'src/users/users.service';
 import { Lesson } from 'src/lessons/entities/lesson.entity';
 
 @Resolver(() => Course)
 export class CoursesResolver {
-  constructor(
-    private readonly coursesService: CoursesService,
-    private readonly usersService: UsersService,
-  ) {}
+  constructor(private readonly coursesService: CoursesService) {}
 
   @Query(() => [Course], { name: 'courses' })
   findAll() {

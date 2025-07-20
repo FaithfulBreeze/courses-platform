@@ -45,10 +45,10 @@ type Course {
 type Query {
   courses: [Course!]!
   course(id: Int!): Course!
-  users: [User!]!
-  user(id: Int!): User!
   reviews: [Review!]!
   review(id: Int!): Review!
+  users: [User!]!
+  user(id: Int!): User!
   lessons: [Lesson!]!
   lesson(id: Int!): Lesson!
 }
