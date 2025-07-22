@@ -2,13 +2,11 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Lesson {
+type Review {
   id: Int!
-  url: String!
-  thumbnail: String!
-  title: String!
-  description: String!
-  duration: String
+  content: String!
+  rate: Int!
+  reviewer: User!
   course: Course!
 }
 
@@ -20,13 +18,18 @@ type User {
   avatar: String
   reviews: [Review!]!
   purchasedCourses: [Course!]!
+  completedLessons: [Lesson!]!
   createdCourses: [Course!]!
 }
 
-type Review {
+type Lesson {
   id: Int!
-  content: String!
-  reviewer: User!
+  url: String!
+  thumbnail: String!
+  title: String!
+  description: String!
+  completedBy: [User!]!
+  duration: String
   course: Course!
 }
 
@@ -35,6 +38,8 @@ type Course {
   title: String!
   description: String!
   thumbnail: String!
+  trailer: String
+  trailerDuration: Int
   duration: String
   owner: User!
   reviews: [Review!]!
@@ -55,17 +60,9 @@ type Query {
 
 type Mutation {
   createReview(createReviewInput: CreateReviewInput!): Review!
-  updateReview(updateReviewInput: UpdateReviewInput!): Review!
-  removeReview(id: Int!): Review!
 }
 
 input CreateReviewInput {
   """Example field (placeholder)"""
   exampleField: Int!
-}
-
-input UpdateReviewInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
 }
