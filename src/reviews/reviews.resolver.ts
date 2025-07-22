@@ -1,8 +1,8 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int, ResolveField, Parent } from '@nestjs/graphql';
 import { ReviewsService } from './reviews.service';
 import { Review } from './entities/review.entity';
 import { CreateReviewInput } from './dto/create-review.input';
-import { UpdateReviewInput } from './dto/update-review.input';
+import { User } from 'src/users/entities/user.entity';
 
 @Resolver(() => Review)
 export class ReviewsResolver {
@@ -23,13 +23,8 @@ export class ReviewsResolver {
     return this.reviewsService.findOne(id);
   }
 
-  @Mutation(() => Review)
-  updateReview(@Args('updateReviewInput') updateReviewInput: UpdateReviewInput) {
-    return this.reviewsService.update(updateReviewInput.id, updateReviewInput);
-  }
-
-  @Mutation(() => Review)
-  removeReview(@Args('id', { type: () => Int }) id: number) {
-    return this.reviewsService.remove(id);
+  @ResolveField(() => User, { name: 'reviewer' })
+  findReviewOwner(@Parent() parent: Review) {
+    return this.reviewsService.findReviewOwner(parent.id);
   }
 }
