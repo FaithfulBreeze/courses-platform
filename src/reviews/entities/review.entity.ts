@@ -14,6 +14,10 @@ export class Review {
   @Column()
   content: string;
 
+  @Field(() => Int)
+  @Column({ enum: [1, 2, 3, 4, 5], default: 1 })
+  rate: number;
+
   @Field(() => User)
   @ManyToOne(() => User, (reviewer) => reviewer.reviews)
   reviewer: User;
