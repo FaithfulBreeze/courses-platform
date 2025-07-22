@@ -2,6 +2,7 @@ import { Resolver, Query, Mutation, Args, Int, ResolveField, Parent } from '@nes
 import { UsersService } from './users.service';
 import { User } from './entities/user.entity';
 import { Course } from 'src/courses/entities/course.entity';
+import { Lesson } from 'src/lessons/entities/lesson.entity';
 
 @Resolver(() => User)
 export class UsersResolver {
@@ -18,7 +19,12 @@ export class UsersResolver {
   }
 
   @ResolveField(() => [Course], { name: 'purchasedCourses' })
-  async findUserPurchasedCourses(@Parent() parent: User) {
+  findUserPurchasedCourses(@Parent() parent: User) {
     return this.usersService.findUserPurchasedCourses(parent.id);
+  }
+
+  @ResolveField(() => [Lesson], { name: 'completedLessons' })
+  findUserCompletedLessons(@Parent() parent: User) {
+    return this.usersService.findUserCompletedLessons(parent.id);
   }
 }
