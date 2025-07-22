@@ -9,12 +9,16 @@ import { InjectQueue } from '@nestjs/bullmq';
 import { Queue } from 'bullmq';
 import { Course } from 'src/courses/entities/course.entity';
 import { User } from 'src/users/entities/user.entity';
+import { QueryBus } from '@nestjs/cqrs';
+import { FindLessonCompletedUsers } from './queries/find-lesson-completed-users/find-lesson-completed-users.query';
+import { FindLessonCourse } from './queries/find-lesson-course/find-lesson-course.query';
 
 @Injectable()
 export class LessonsService {
   constructor(
     @InjectRepository(Lesson)
     private readonly lessonsRepository: Repository<Lesson>,
+    private readonly queryBus: QueryBus,
     @InjectQueue('create-lesson') private readonly queue: Queue,
     private readonly mailerService: NodemailerService,
   ) {}
@@ -43,6 +47,14 @@ export class LessonsService {
 
   findAll() {
     return this.lessonsRepository.find();
+  }
+
+  findLessonCourse(id: number) {
+    return this.queryBus.execute(new FindLessonCourse(id));
+  }
+
+  findLessonCompletedUsers(id: number) {
+    return this.queryBus.execute(new FindLessonCompletedUsers(id));
   }
 
   findOne(id: number) {
