@@ -7,6 +7,7 @@ import { BcryptService } from 'src/bcrypt/bcrypt.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { QueryBus } from '@nestjs/cqrs';
 import { FindUserPurchasedCoursesQuery } from './queries/find-user-purchased-courses/find-user-purchased-courses.query';
+import { FindUserCompletedLessons } from './queries/find-user-completed-lessons/find-user-completed-lessons.query';
 
 @Injectable()
 export class UsersService {
@@ -43,6 +44,10 @@ export class UsersService {
 
   findUserPurchasedCourses(id: number) {
     return this.queryBus.execute(new FindUserPurchasedCoursesQuery(id));
+  }
+
+  findUserCompletedLessons(id: number) {
+    return this.queryBus.execute(new FindUserCompletedLessons(id));
   }
 
   update(id: number, updateUserInput: UpdateUserInput) {

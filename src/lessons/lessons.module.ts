@@ -16,6 +16,7 @@ import { BullModule } from '@nestjs/bullmq';
 import { Handlers } from './events';
 import { Processors } from './processors';
 import { CqrsModule, EventBus } from '@nestjs/cqrs';
+import { Queries } from './queries';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { CqrsModule, EventBus } from '@nestjs/cqrs';
     EventBus,
     ...Processors,
     ...Handlers,
+    ...Queries,
   ],
   controllers: [LessonsController],
 })

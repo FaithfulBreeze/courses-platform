@@ -33,6 +33,14 @@ export class Course {
 
   @Field({ nullable: true })
   @Column({ nullable: true })
+  trailer?: string;
+
+  @Field(() => Int, { nullable: true })
+  @Column({ nullable: true })
+  trailerDuration?: number;
+
+  @Field({ nullable: true })
+  @Column({ nullable: true })
   duration?: string;
 
   @Field()

@@ -7,6 +7,7 @@ import { QueryBus } from '@nestjs/cqrs';
 import { FindCourseOwner } from './queries/find-course-owner/find-course-owner.query';
 import { FindCourseStudents } from './queries/find-course-students/find-course-students.query';
 import { FindCourseLessons } from './queries/find-course-lessons/find-course-lessons.query';
+import { FindCourseReviews } from './queries/find-course-reviews/find-course-reviews.query';
 
 @Injectable()
 export class CoursesService {
@@ -43,5 +44,9 @@ export class CoursesService {
 
   findCourseLessons(id: number) {
     return this.queryBus.execute(new FindCourseLessons(id));
+  }
+
+  findCourseReviews(id: number) {
+    return this.queryBus.execute(new FindCourseReviews(id));
   }
 }
