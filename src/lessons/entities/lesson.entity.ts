@@ -1,6 +1,7 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
 import { Course } from 'src/courses/entities/course.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { User } from 'src/users/entities/user.entity';
+import { Column, Entity, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @ObjectType()
 @Entity()
@@ -24,6 +25,10 @@ export class Lesson {
   @Field()
   @Column()
   description: string;
+
+  @Field(() => [User])
+  @ManyToMany(() => User, (user) => user.completedLessons)
+  completedBy: User[];
 
   @Field({ nullable: true })
   @Column({ nullable: true })
