@@ -24,7 +24,7 @@ export class AppendCookieInterceptor implements NestInterceptor {
         const response: Response = context.switchToHttp().getResponse();
         response.cookie('jwt', token, {
           httpOnly: true,
-          sameSite: false,
+          sameSite: 'none',
           secure: true,
           maxAge: 1000 * 60 * 60 * 24,
         });

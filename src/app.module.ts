@@ -1,6 +1,6 @@
 import { Module, OnModuleInit } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
-import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { ApolloDriverConfig } from '@nestjs/apollo';
 import { CoursesModule } from './courses/courses.module';
 import { ReviewsModule } from './reviews/reviews.module';
 import { UsersModule } from './users/users.module';
@@ -16,41 +16,22 @@ import { join } from 'path';
 import { seed } from '../test/seed';
 import { DataSource } from 'typeorm';
 import { environments } from './common/constants/environments';
+import { typeormConfigs } from './configs/typeorm';
+import { graphqlConfigs } from './configs/graphql';
+import { bullmqConfigs } from './configs/bullmq';
+import 'dotenv/config';
 
 @Module({
   imports: [
-    GraphQLModule.forRoot<ApolloDriverConfig>({
-      driver: ApolloDriver,
-      playground: true,
-      autoSchemaFile: join(process.cwd(), './schema.gql'),
-      hideSchemaDetailsFromClientErrors: true,
-    }),
-    TypeOrmModule.forRoot({
-      type: 'sqlite',
-      database: ':memory:',
-      autoLoadEntities: true,
-      synchronize: true,
-    }),
+    GraphQLModule.forRoot<ApolloDriverConfig>(
+      graphqlConfigs[process.env.NODE_ENV || environments.DEVELOPMENT],
+    ),
+    TypeOrmModule.forRoot(typeormConfigs[process.env.NODE_ENV || environments.DEVELOPMENT]),
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: join(process.cwd(), '.env'),
     }),
-    BullModule.forRoot({
-      connection: {
-        ...(process.env.BULL_REDIS_URL
-          ? { url: process.env.BULL_REDIS_URL }
-          : {
-              host: process.env.BULL_REDIS_HOST,
-              port: parseInt(process.env.BULL_REDIS_PORT!),
-              username: process.env.BULL_REDIS_USERNAME,
-              password: process.env.BULL_REDIS_PASSWORD,
-            }),
-      },
-      defaultJobOptions: {
-        attempts: 1,
-        removeOnFail: true,
-      },
-    }),
+    BullModule.forRoot(bullmqConfigs[process.env.NODE_ENV || environments.DEVELOPMENT]),
     CoursesModule,
     ReviewsModule,
     UsersModule,
