@@ -8,8 +8,8 @@ import {
 import { InjectDataSource } from '@nestjs/typeorm';
 import { Response } from 'express';
 import { map, Observable } from 'rxjs';
-import { BcryptService } from 'src/bcrypt/bcrypt.service';
-import { User } from 'src/users/entities/user.entity';
+import { BcryptService } from '../../../bcrypt/bcrypt.service';
+import { User } from '../../../users/entities/user.entity';
 import { DataSource } from 'typeorm';
 
 @Injectable()

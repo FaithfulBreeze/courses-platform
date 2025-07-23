@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { del, put } from '@vercel/blob';
-import { CdnService } from 'src/common/abstractions/cdn.interface';
-import { File } from 'src/common/interfaces/file.interface';
+import { CdnService } from '../common/abstractions/cdn.interface';
+import { File } from '../common/interfaces/file.interface';
 
 @Injectable()
 export class VercelCdnService implements CdnService {

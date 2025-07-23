@@ -1,6 +1,6 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectDataSource } from '@nestjs/typeorm';
-import { User } from 'src/users/entities/user.entity';
+import { User } from '../../../users/entities/user.entity';
 import { DataSource } from 'typeorm';
 
 export class FindUserByIdQuery {

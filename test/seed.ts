@@ -1,7 +1,7 @@
-import { Course } from 'src/courses/entities/course.entity';
-import { Lesson } from 'src/lessons/entities/lesson.entity';
-import { Review } from 'src/reviews/entities/review.entity';
-import { User } from 'src/users/entities/user.entity';
+import { Course } from '../src/courses/entities/course.entity';
+import { Lesson } from '../src/lessons/entities/lesson.entity';
+import { Review } from '../src/reviews/entities/review.entity';
+import { User } from '../src/users/entities/user.entity';
 import { DataSource, EntityManager } from 'typeorm';
 
 export const seed = async (dataSource: DataSource) => {

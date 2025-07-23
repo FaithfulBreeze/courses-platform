@@ -1,7 +1,7 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
-import { Lesson } from 'src/lessons/entities/lesson.entity';
-import { Review } from 'src/reviews/entities/review.entity';
-import { User } from 'src/users/entities/user.entity';
+import { Lesson } from '../../lessons/entities/lesson.entity';
+import { Review } from '../../reviews/entities/review.entity';
+import { User } from '../../users/entities/user.entity';
 import {
   Column,
   Entity,

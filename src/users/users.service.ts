@@ -3,7 +3,7 @@ import { UpdateUserInput } from './dto/update-user.input';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
-import { BcryptService } from 'src/bcrypt/bcrypt.service';
+import { BcryptService } from '../bcrypt/bcrypt.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { QueryBus } from '@nestjs/cqrs';
 import { FindUserPurchasedCoursesQuery } from './queries/find-user-purchased-courses/find-user-purchased-courses.query';

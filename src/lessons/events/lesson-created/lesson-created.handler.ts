@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { OnEvent } from '@nestjs/event-emitter';
 import { InjectDataSource } from '@nestjs/typeorm';
-import { NodemailerService } from 'src/nodemailer/nodemailer.service';
-import { User } from 'src/users/entities/user.entity';
+import { NodemailerService } from '../../../nodemailer/nodemailer.service';
+import { User } from '../../../users/entities/user.entity';
 import { DataSource } from 'typeorm';
 import { LessonCreatedEvent } from './lesson-created.event';
 import { IEventHandler } from '@nestjs/cqrs';
