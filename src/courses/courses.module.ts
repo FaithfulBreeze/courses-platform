@@ -6,7 +6,7 @@ import { Course } from './entities/course.entity';
 import { CoursesController } from './courses.controller';
 import { JwtService } from '@nestjs/jwt';
 import { Queries } from './queries';
-import { BcryptService } from 'src/bcrypt/bcrypt.service';
+import { BcryptService } from '../bcrypt/bcrypt.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Course])],

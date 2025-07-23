@@ -1,6 +1,6 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
-import { Course } from 'src/courses/entities/course.entity';
-import { User } from 'src/users/entities/user.entity';
+import { Course } from '../../courses/entities/course.entity';
+import { User } from '../../users/entities/user.entity';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @ObjectType()

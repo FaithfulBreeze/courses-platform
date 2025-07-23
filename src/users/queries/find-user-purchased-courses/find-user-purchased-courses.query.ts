@@ -1,7 +1,7 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectDataSource } from '@nestjs/typeorm';
-import { Course } from 'src/courses/entities/course.entity';
-import { User } from 'src/users/entities/user.entity';
+import { Course } from '../../../courses/entities/course.entity';
+import { User } from '../../../users/entities/user.entity';
 import { DataSource } from 'typeorm';
 
 export class FindUserPurchasedCoursesQuery {

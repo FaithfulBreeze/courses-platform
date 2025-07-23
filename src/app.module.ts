@@ -13,7 +13,7 @@ import { AuthModule } from './auth/auth.module';
 import { BcryptService } from './bcrypt/bcrypt.service';
 import { BullModule } from '@nestjs/bullmq';
 import { join } from 'path';
-import { seed } from 'test/seed';
+import { seed } from '../test/seed';
 import { DataSource } from 'typeorm';
 import { environments } from './common/constants/environments';
 
@@ -37,10 +37,14 @@ import { environments } from './common/constants/environments';
     }),
     BullModule.forRoot({
       connection: {
-        host: process.env.BULL_REDIS_HOST,
-        port: parseInt(process.env.BULL_REDIS_PORT!),
-        username: process.env.BULL_REDIS_USERNAME,
-        password: process.env.BULL_REDIS_PASSWORD,
+        ...(process.env.BULL_REDIS_URL
+          ? { url: process.env.BULL_REDIS_URL }
+          : {
+              host: process.env.BULL_REDIS_HOST,
+              port: parseInt(process.env.BULL_REDIS_PORT!),
+              username: process.env.BULL_REDIS_USERNAME,
+              password: process.env.BULL_REDIS_PASSWORD,
+            }),
       },
       defaultJobOptions: {
         attempts: 1,

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { compare, hash } from 'bcrypt';
-import { EncoderService } from 'src/common/abstractions/encoder.interface';
+import { EncoderService } from '../common/abstractions/encoder.interface';
 
 @Injectable()
 export class BcryptService implements EncoderService {

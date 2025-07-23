@@ -1,7 +1,7 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectDataSource } from '@nestjs/typeorm';
-import { Review } from 'src/reviews/entities/review.entity';
-import { User } from 'src/users/entities/user.entity';
+import { Review } from '../../../reviews/entities/review.entity';
+import { User } from '../../../users/entities/user.entity';
 import { DataSource } from 'typeorm';
 
 export class FindReviewOwner {

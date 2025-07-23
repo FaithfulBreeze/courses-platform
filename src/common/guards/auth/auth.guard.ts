@@ -2,9 +2,8 @@ import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { InjectDataSource } from '@nestjs/typeorm';
-import { Observable } from 'rxjs';
-import { BcryptService } from 'src/bcrypt/bcrypt.service';
-import { User } from 'src/users/entities/user.entity';
+import { BcryptService } from '../../../bcrypt/bcrypt.service';
+import { User } from '../../../users/entities/user.entity';
 import { DataSource } from 'typeorm';
 
 @Injectable()

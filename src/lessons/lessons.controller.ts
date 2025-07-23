@@ -11,9 +11,9 @@ import {
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { CreateLessonDto, CreateLessonFilesDto } from './dto/create-lesson.dto';
 import { LessonsService } from './lessons.service';
-import { parseFileConfig } from 'src/common/utils/parse-file.utils';
-import { AuthGuard } from 'src/common/guards/auth/auth.guard';
-import { User } from 'src/common/decorators/user/user.decorator';
+import { parseFileConfig } from '../common/utils/parse-file.utils';
+import { AuthGuard } from '../common/guards/auth/auth.guard';
+import { User } from '../common/decorators/user/user.decorator';
 
 @Controller('lessons')
 export class LessonsController {

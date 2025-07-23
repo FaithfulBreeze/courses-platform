@@ -1,8 +1,8 @@
 import { Resolver, Query, Args, Int, ResolveField, Parent } from '@nestjs/graphql';
 import { LessonsService } from './lessons.service';
 import { Lesson } from './entities/lesson.entity';
-import { User } from 'src/users/entities/user.entity';
-import { Course } from 'src/courses/entities/course.entity';
+import { User } from '../users/entities/user.entity';
+import { Course } from '../courses/entities/course.entity';
 
 @Resolver(() => Lesson)
 export class LessonsResolver {

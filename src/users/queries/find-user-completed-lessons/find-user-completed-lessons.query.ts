@@ -1,7 +1,7 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectDataSource } from '@nestjs/typeorm';
-import { Lesson } from 'src/lessons/entities/lesson.entity';
-import { User } from 'src/users/entities/user.entity';
+import { Lesson } from '../../../lessons/entities/lesson.entity';
+import { User } from '../../../users/entities/user.entity';
 import { DataSource } from 'typeorm';
 
 export class FindUserCompletedLessons {
