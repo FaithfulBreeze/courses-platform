@@ -2,6 +2,7 @@ import { ObjectType, Field, Int } from '@nestjs/graphql';
 import { Lesson } from '../../lessons/entities/lesson.entity';
 import { Review } from '../../reviews/entities/review.entity';
 import { User } from '../../users/entities/user.entity';
+import { CoursePurchase } from './course-purchase.entity';
 import {
   Column,
   Entity,
@@ -59,4 +60,8 @@ export class Course {
   @Field(() => [Lesson])
   @OneToMany(() => Lesson, (lesson) => lesson.course)
   lessons: Lesson[];
+
+  @Field(() => [CoursePurchase])
+  @OneToMany(() => CoursePurchase, (coursePurchase) => coursePurchase.user)
+  coursePurchases: CoursePurchase;
 }

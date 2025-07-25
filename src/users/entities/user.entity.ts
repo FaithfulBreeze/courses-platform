@@ -2,6 +2,7 @@ import { ObjectType, Field, Int } from '@nestjs/graphql';
 import { Course } from '../../courses/entities/course.entity';
 import { Lesson } from '../../lessons/entities/lesson.entity';
 import { Review } from '../../reviews/entities/review.entity';
+import { CoursePurchase } from '../../courses/entities/course-purchase.entity';
 import { Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @ObjectType()
@@ -47,4 +48,8 @@ export class User {
   @Field(() => [Course])
   @OneToMany(() => Course, (course) => course.owner)
   createdCourses: Course[];
+
+  @Field(() => [CoursePurchase])
+  @OneToMany(() => CoursePurchase, (coursePurchase) => coursePurchase.user)
+  coursePurchases: CoursePurchase;
 }
