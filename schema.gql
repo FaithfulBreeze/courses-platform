@@ -10,6 +10,18 @@ type Review {
   course: Course!
 }
 
+type CoursePurchase {
+  id: Int!
+  user: User!
+  course: Course!
+  purchasedAt: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
 type User {
   id: Int!
   email: String!
@@ -20,6 +32,8 @@ type User {
   purchasedCourses: [Course!]!
   completedLessons: [Lesson!]!
   createdCourses: [Course!]!
+  coursePurchases: [CoursePurchase!]!
+  lastCoursePurchases(limit: Int!): [CoursePurchase!]!
 }
 
 type Lesson {
@@ -45,6 +59,7 @@ type Course {
   reviews: [Review!]!
   students: [User!]!
   lessons: [Lesson!]!
+  coursePurchases: [CoursePurchase!]!
 }
 
 type Query {

@@ -1,5 +1,5 @@
 import { BullRootModuleOptions } from '@nestjs/bullmq';
-import { environments } from 'src/common/constants/environments';
+import { environments } from '../common/constants/environments';
 import 'dotenv/config';
 
 export const bullmqConfigs: Record<string, BullRootModuleOptions> = {

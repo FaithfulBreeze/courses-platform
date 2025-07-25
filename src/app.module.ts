@@ -41,9 +41,4 @@ import 'dotenv/config';
   controllers: [],
   providers: [VercelCdnService, NodemailerService, BcryptService],
 })
-export class AppModule implements OnModuleInit {
-  constructor(@InjectDataSource() private readonly dataSource: DataSource) {}
-  onModuleInit() {
-    if (process.env.NODE_ENV === environments.DEVELOPMENT) seed(this.dataSource);
-  }
-}
+export class AppModule {}

@@ -1,6 +1,6 @@
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
-import { environments } from 'src/common/constants/environments';
+import { environments } from '../common/constants/environments';
 
 export const graphqlConfigs: Record<string, ApolloDriverConfig> = {
   [environments.DEVELOPMENT]: {
