@@ -8,6 +8,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { QueryBus } from '@nestjs/cqrs';
 import { FindUserPurchasedCoursesQuery } from './queries/find-user-purchased-courses/find-user-purchased-courses.query';
 import { FindUserCompletedLessons } from './queries/find-user-completed-lessons/find-user-completed-lessons.query';
+import { CoursePurchase } from '../courses/entities/course-purchase.entity';
 
 @Injectable()
 export class UsersService {
@@ -48,6 +49,24 @@ export class UsersService {
 
   findUserCompletedLessons(id: number) {
     return this.queryBus.execute(new FindUserCompletedLessons(id));
+  }
+
+  async findUserLastCoursePurchases(id: number, limit: number) {
+    return this.usersRepository.manager.find(CoursePurchase, {
+      where: {
+        user: {
+          id,
+        },
+      },
+      take: limit,
+      order: {
+        purchasedAt: 'DESC',
+      },
+      relations: {
+        user: true,
+        course: true,
+      },
+    });
   }
 
   update(id: number, updateUserInput: UpdateUserInput) {

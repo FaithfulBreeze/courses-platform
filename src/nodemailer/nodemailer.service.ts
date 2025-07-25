@@ -34,6 +34,7 @@ export class NodemailerService implements MailerService {
       to: mailArgs.addressee,
       subject: mailArgs.subject,
       text: mailArgs.content,
+      html: mailArgs.html,
     });
   }
 }

@@ -3,12 +3,16 @@ import { Lesson } from '../src/lessons/entities/lesson.entity';
 import { Review } from '../src/reviews/entities/review.entity';
 import { User } from '../src/users/entities/user.entity';
 import { DataSource, EntityManager } from 'typeorm';
+import { CoursesService } from '../src/courses/courses.service';
+import { INestApplicationContext } from '@nestjs/common';
 
-export const seed = async (dataSource: DataSource) => {
+export const seed = async (app: INestApplicationContext, dataSource: DataSource) => {
+  const coursesService = app.get(CoursesService);
+
   dataSource.transaction(async (manager) => {
     await createUsers(manager);
     await createCourses(manager);
-    await updateUsers(manager);
+    await purchaseCourses(coursesService);
     await createLessons(manager);
     await createReviews(manager);
   });
@@ -202,22 +206,14 @@ const createCourses = async (manager: EntityManager) => {
   await manager.save([course1, course2, course3, course4, course5, course6, course7]);
 };
 
-const updateUsers = async (manager: EntityManager) => {
-  const johnDoe = await manager.findOne(User, { where: { id: 1 } });
-
-  if (!johnDoe) return;
-  const janeDoeCourses = await manager.find(Course, {
-    relations: { owner: true },
-    where: {
-      owner: {
-        id: 2,
-      },
-    },
-  });
-
-  johnDoe.purchasedCourses = janeDoeCourses;
-
-  await manager.save(johnDoe);
+const purchaseCourses = async (coursesService: CoursesService) => {
+  await coursesService.purchase({ courseId: 1, userId: 1 });
+  await coursesService.purchase({ courseId: 2, userId: 1 });
+  await coursesService.purchase({ courseId: 3, userId: 1 });
+  await coursesService.purchase({ courseId: 4, userId: 1 });
+  await coursesService.purchase({ courseId: 5, userId: 1 });
+  await coursesService.purchase({ courseId: 6, userId: 1 });
+  await coursesService.purchase({ courseId: 7, userId: 1 });
 };
 
 const createLessons = async (manager: EntityManager) => {
