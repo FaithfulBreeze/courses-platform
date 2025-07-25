@@ -7,10 +7,23 @@ import { CoursesController } from './courses.controller';
 import { JwtService } from '@nestjs/jwt';
 import { Queries } from './queries';
 import { BcryptService } from '../bcrypt/bcrypt.service';
+import { Commands } from './commands';
+import { Handlers } from './events';
+import { NodemailerService } from '../nodemailer/nodemailer.service';
+import { User } from '../users/entities/user.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Course])],
-  providers: [CoursesResolver, CoursesService, JwtService, BcryptService, ...Queries],
+  imports: [TypeOrmModule.forFeature([Course, User])],
+  providers: [
+    CoursesResolver,
+    CoursesService,
+    JwtService,
+    BcryptService,
+    NodemailerService,
+    ...Queries,
+    ...Commands,
+    ...Handlers,
+  ],
   controllers: [CoursesController],
   exports: [TypeOrmModule, CoursesService],
 })

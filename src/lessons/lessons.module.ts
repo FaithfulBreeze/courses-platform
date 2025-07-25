@@ -22,7 +22,6 @@ import { Queries } from './queries';
   imports: [
     TypeOrmModule.forFeature([Lesson, Course, User]),
     BullModule.registerQueue({ name: 'create-lesson' }),
-    CqrsModule.forRoot(),
   ],
   providers: [
     LessonsResolver,
@@ -33,7 +32,6 @@ import { Queries } from './queries';
     NodemailerService,
     UsersService,
     BcryptService,
-    EventBus,
     ...Processors,
     ...Handlers,
     ...Queries,

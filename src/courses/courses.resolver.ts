@@ -4,6 +4,7 @@ import { Course } from './entities/course.entity';
 import { User } from '../users/entities/user.entity';
 import { Lesson } from '../lessons/entities/lesson.entity';
 import { Review } from '../reviews/entities/review.entity';
+import { CoursePurchase } from './entities/course-purchase.entity';
 
 @Resolver(() => Course)
 export class CoursesResolver {
@@ -37,5 +38,15 @@ export class CoursesResolver {
   @ResolveField(() => [Review], { name: 'reviews' })
   findCourseReviews(@Parent() parent: Course) {
     return this.coursesService.findCourseReviews(parent.id);
+  }
+}
+
+@Resolver(() => CoursePurchase)
+export class CoursePurchasesResolver {
+  constructor(private readonly coursesService: CoursesService) {}
+
+  @ResolveField(() => Course, { name: 'course' })
+  findPurchasedCourse(@Parent() parent: CoursePurchase) {
+    return this.coursesService.findPurchasedCourse(parent.id);
   }
 }
