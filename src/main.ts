@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import cookieParser from 'cookie-parser';
-import { seed } from 'test/seed';
+import { seed } from '../test/seed';
 import { DataSource } from 'typeorm';
 import { environments } from './common/constants/environments';
 import 'dotenv/config';
