@@ -54,10 +54,10 @@ export class User {
   @JoinTable()
   completedLessons: Lesson[];
 
-  @Field(() => Lesson)
-  @OneToOne(() => Lesson)
+  @Field(() => Lesson, { nullable: true })
+  @OneToOne(() => Lesson, { nullable: true })
   @JoinColumn()
-  lastWatchedLesson: Lesson;
+  lastWatchedLesson?: Lesson;
 
   @Field(() => [Course])
   @OneToMany(() => Course, (course) => course.owner)

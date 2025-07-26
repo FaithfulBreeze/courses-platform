@@ -31,7 +31,7 @@ type User {
   reviews: [Review!]!
   purchasedCourses: [Course!]!
   completedLessons: [Lesson!]!
-  lastWatchedLesson: Lesson!
+  lastWatchedLesson: Lesson
   createdCourses: [Course!]!
   coursePurchases: [CoursePurchase!]!
   lastCoursePurchases(limit: Int!): [CoursePurchase!]!
