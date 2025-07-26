@@ -36,4 +36,9 @@ export class UsersResolver {
   ) {
     return this.usersService.findUserLastCoursePurchases(parent.id, limit);
   }
+
+  @ResolveField(() => Lesson, { name: 'lastWatchedLesson' })
+  findUserLasWatchedLesson(@Parent() parent: User) {
+    return this.usersService.findUserLastWatchedLesson(parent.id);
+  }
 }
