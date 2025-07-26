@@ -28,7 +28,7 @@ export class Lesson {
   description: string;
 
   @Field(() => [Review])
-  @ManyToMany(() => Review, (review) => review.lessons)
+  @ManyToMany(() => Review, (review) => review.lesson)
   @JoinTable()
   reviews: Review[];
 

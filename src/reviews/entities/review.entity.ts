@@ -29,5 +29,5 @@ export class Review {
 
   @Field(() => Lesson)
   @ManyToOne(() => Lesson, (lesson) => lesson.reviews)
-  lessons: Lesson;
+  lesson: Lesson;
 }
