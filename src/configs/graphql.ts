@@ -12,5 +12,8 @@ export const graphqlConfigs: Record<string, ApolloDriverConfig> = {
     driver: ApolloDriver,
     typePaths: [join(process.cwd(), './schema.gql')],
     hideSchemaDetailsFromClientErrors: true,
+    cache: 'bounded',
+    csrfPrevention: true,
+    debug: false,
   },
 };
