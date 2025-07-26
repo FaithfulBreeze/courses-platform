@@ -1,7 +1,15 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
 import { Course } from '../../courses/entities/course.entity';
 import { User } from '../../users/entities/user.entity';
-import { Column, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToMany,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Review } from '../../reviews/entities/review.entity';
 
 @ObjectType()
@@ -28,8 +36,8 @@ export class Lesson {
   description: string;
 
   @Field(() => [Review])
-  @ManyToMany(() => Review, (review) => review.lesson)
-  @JoinTable()
+  @OneToMany(() => Review, (review) => review.lesson)
+  @JoinColumn()
   reviews: Review[];
 
   @Field(() => [User])
