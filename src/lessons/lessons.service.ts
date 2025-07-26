@@ -12,6 +12,7 @@ import { User } from '../users/entities/user.entity';
 import { QueryBus } from '@nestjs/cqrs';
 import { FindLessonCompletedUsers } from './queries/find-lesson-completed-users/find-lesson-completed-users.query';
 import { FindLessonCourse } from './queries/find-lesson-course/find-lesson-course.query';
+import { FindLessonReviews } from './queries/find-lesson-reviews/find-lesson-reviews.query';
 
 @Injectable()
 export class LessonsService {
@@ -55,6 +56,10 @@ export class LessonsService {
 
   findLessonCompletedUsers(id: number) {
     return this.queryBus.execute(new FindLessonCompletedUsers(id));
+  }
+
+  findLessonReviews(id: number) {
+    return this.queryBus.execute(new FindLessonReviews(id));
   }
 
   findOne(id: number) {

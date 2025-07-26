@@ -442,13 +442,14 @@ const createReviews = async (manager: EntityManager) => {
     'Wished for more interactive code playgrounds.',
   ];
 
-  const reviews: any[] = [];
+  const courseReviews: any[] = [];
+  const lessonReviews: any[] = [];
 
-  for (let i = 0; i < 50; i++) {
+  for (let i = 0; i < 100; i++) {
     const reviewerId = Math.floor(Math.random() * 15) + 1; // user id 1–15
 
-    if (reviews.some((review) => review.reviewer.id == reviewerId)) continue;
-    reviews.push({
+    if (courseReviews.some((review) => review.reviewer.id == reviewerId)) continue;
+    courseReviews.push({
       content: sampleContents[i % sampleContents.length],
       course: {
         id: Math.floor(Math.random() * 6) + 1, // course id 1–6
@@ -460,6 +461,22 @@ const createReviews = async (manager: EntityManager) => {
     });
   }
 
-  const createdReviews = manager.create(Review, reviews);
+  for (let i = 0; i < 100; i++) {
+    const reviewerId = Math.floor(Math.random() * 15) + 1; // user id 1–15
+
+    if (lessonReviews.some((review) => review.reviewer.id == reviewerId)) continue;
+    lessonReviews.push({
+      content: sampleContents[i % sampleContents.length],
+      lesson: {
+        id: Math.floor(Math.random() * 6) + 1, // lesson id 1–6
+      },
+      reviewer: {
+        id: reviewerId,
+      },
+      rate: Math.floor(Math.random() * 3) + 3, // 3–5 stars
+    });
+  }
+
+  const createdReviews = manager.create(Review, [...courseReviews, ...lessonReviews]);
   await manager.save(createdReviews);
 };

@@ -2,6 +2,7 @@ import { ObjectType, Field, Int } from '@nestjs/graphql';
 import { Course } from '../../courses/entities/course.entity';
 import { User } from '../../users/entities/user.entity';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Lesson } from '../../lessons/entities/lesson.entity';
 
 @ObjectType()
 @Entity()
@@ -25,4 +26,8 @@ export class Review {
   @Field(() => Course)
   @ManyToOne(() => Course, (course) => course.reviews)
   course: Course;
+
+  @Field(() => Lesson)
+  @ManyToOne(() => Lesson, (lesson) => lesson.reviews)
+  lessons: Lesson;
 }
