@@ -3,7 +3,16 @@ import { Course } from '../../courses/entities/course.entity';
 import { Lesson } from '../../lessons/entities/lesson.entity';
 import { Review } from '../../reviews/entities/review.entity';
 import { CoursePurchase } from '../../courses/entities/course-purchase.entity';
-import { Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  JoinTable,
+  ManyToMany,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @ObjectType()
 @Entity()
@@ -44,6 +53,11 @@ export class User {
   @ManyToMany(() => Lesson, (lesson) => lesson.completedBy)
   @JoinTable()
   completedLessons: Lesson[];
+
+  @Field(() => Lesson)
+  @OneToOne(() => Lesson)
+  @JoinColumn()
+  lastWatchedLesson: Lesson;
 
   @Field(() => [Course])
   @OneToMany(() => Course, (course) => course.owner)
