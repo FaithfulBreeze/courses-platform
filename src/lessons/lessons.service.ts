@@ -63,7 +63,11 @@ export class LessonsService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} lesson`;
+    return this.lessonsRepository.findOne({
+      where: {
+        id,
+      },
+    });
   }
 
   update(id: number, updateLessonInput: UpdateLessonInput) {

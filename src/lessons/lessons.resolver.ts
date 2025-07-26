@@ -14,7 +14,7 @@ export class LessonsResolver {
     return this.lessonsService.findAll();
   }
 
-  @Query(() => Lesson, { name: 'lesson' })
+  @Query(() => Lesson, { name: 'lesson', nullable: true })
   findOne(@Args('id', { type: () => Int }) id: number) {
     return this.lessonsService.findOne(id);
   }
@@ -30,7 +30,7 @@ export class LessonsResolver {
   }
 
   @ResolveField(() => [Review], { name: 'reviews' })
-  findCourseReviews(@Parent() parent: Lesson) {
+  findLessonReviews(@Parent() parent: Lesson) {
     return this.lessonsService.findLessonReviews(parent.id);
   }
 }
