@@ -3,6 +3,7 @@ import { LessonsService } from './lessons.service';
 import { Lesson } from './entities/lesson.entity';
 import { User } from '../users/entities/user.entity';
 import { Course } from '../courses/entities/course.entity';
+import { Review } from '../reviews/entities/review.entity';
 
 @Resolver(() => Lesson)
 export class LessonsResolver {
@@ -26,5 +27,10 @@ export class LessonsResolver {
   @ResolveField(() => [User], { name: 'completedBy' })
   findLessonCompletedUsers(@Parent() parent: Lesson) {
     return this.lessonsService.findLessonCompletedUsers(parent.id);
+  }
+
+  @ResolveField(() => [Review], { name: 'reviews' })
+  findCourseReviews(@Parent() parent: Lesson) {
+    return this.lessonsService.findLessonReviews(parent.id);
   }
 }
