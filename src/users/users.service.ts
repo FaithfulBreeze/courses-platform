@@ -1,4 +1,9 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { UpdateUserInput } from './dto/update-user.input';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
@@ -9,6 +14,7 @@ import { QueryBus } from '@nestjs/cqrs';
 import { FindUserPurchasedCoursesQuery } from './queries/find-user-purchased-courses/find-user-purchased-courses.query';
 import { FindUserCompletedLessons } from './queries/find-user-completed-lessons/find-user-completed-lessons.query';
 import { CoursePurchase } from '../courses/entities/course-purchase.entity';
+import { UpdateUserLastWatchedLessonDto } from './dto/update-user-last-watched-lesson.dto';
 
 @Injectable()
 export class UsersService {
@@ -17,6 +23,7 @@ export class UsersService {
     private readonly queryBus: QueryBus,
     private readonly bcryptService: BcryptService,
   ) {}
+
   create(createUserInput: CreateUserDto) {
     return this.usersRepository.manager.transaction(async (manager) => {
       const foundEmail = await manager.findOne(User, {
@@ -67,6 +74,47 @@ export class UsersService {
         course: true,
       },
     });
+  }
+
+  async findUserLastWatchedLesson(id: number) {
+    const user = await this.usersRepository.findOne({
+      where: {
+        id,
+      },
+      relations: { lastWatchedLesson: true },
+    });
+
+    if (!user) throw new NotFoundException('User not found');
+
+    return user.lastWatchedLesson;
+  }
+
+  async updateUserLastWatchedLesson(id: number, { lessonId }: UpdateUserLastWatchedLessonDto) {
+    const user = await this.usersRepository.findOne({
+      where: {
+        id,
+      },
+      relations: {
+        purchasedCourses: {
+          lessons: true,
+        },
+      },
+    });
+
+    if (!user) throw new NotFoundException('User not found');
+
+    const course = user.purchasedCourses.find((c) => c.lessons.some((l) => l.id === lessonId));
+
+    if (!course) throw new UnauthorizedException('The user does not own the course');
+
+    const lesson = course.lessons.find((l) => l.id === lessonId);
+
+    if (!lesson) throw new NotFoundException('Lesson not found');
+
+    user.lastWatchedLesson = lesson;
+    await this.usersRepository.save(user);
+
+    return lesson;
   }
 
   update(id: number, updateUserInput: UpdateUserInput) {
