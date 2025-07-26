@@ -10,7 +10,7 @@ import 'dotenv/config';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  if (process.env.NODE_ENV === environments.DEVELOPMENT) {
+  if (process.env.NODE_ENV === environments.DEVELOPMENT || process.env.FORCE_SEED) {
     const dataSource = app.get(DataSource);
     await seed(app, dataSource);
   }

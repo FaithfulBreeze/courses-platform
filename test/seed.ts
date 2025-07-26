@@ -5,16 +5,19 @@ import { User } from '../src/users/entities/user.entity';
 import { DataSource, EntityManager } from 'typeorm';
 import { CoursesService } from '../src/courses/courses.service';
 import { INestApplicationContext } from '@nestjs/common';
+import { exec } from 'child_process';
 
 export const seed = async (app: INestApplicationContext, dataSource: DataSource) => {
   const coursesService = app.get(CoursesService);
+  const manager = dataSource.manager;
 
-  dataSource.transaction(async (manager) => {
-    await createUsers(manager);
-    await createCourses(manager);
-    await purchaseCourses(coursesService);
-    await createLessons(manager);
-    await createReviews(manager);
+  await dataSource.dropDatabase();
+  exec('sh run-migration.sh', () => {
+    createUsers(manager)
+      .then(() => createCourses(manager))
+      .then(() => purchaseCourses(coursesService))
+      .then(() => createLessons(manager))
+      .then(() => createReviews(manager));
   });
 };
 
