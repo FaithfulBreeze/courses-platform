@@ -4,9 +4,10 @@ import { NodemailerService } from '../../../nodemailer/nodemailer.service';
 import { User } from '../../../users/entities/user.entity';
 import { DataSource } from 'typeorm';
 import { LessonCreatedEvent } from './lesson-created.event';
-import { IEventHandler } from '@nestjs/cqrs';
+import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
 
 @Injectable()
+@EventsHandler(LessonCreatedEvent)
 export class LessonCreatedHandler implements IEventHandler<LessonCreatedEvent> {
   constructor(
     private readonly mailerService: NodemailerService,

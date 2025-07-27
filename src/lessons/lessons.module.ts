@@ -15,13 +15,13 @@ import { BcryptService } from '../bcrypt/bcrypt.service';
 import { BullModule } from '@nestjs/bullmq';
 import { Handlers } from './events';
 import { Processors } from './processors';
-import { CqrsModule, EventBus } from '@nestjs/cqrs';
 import { Queries } from './queries';
+import { FfmpegService } from 'src/ffmpeg/ffmpeg.service';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Lesson, Course, User]),
-    BullModule.registerQueue({ name: 'create-lesson' }),
+    BullModule.registerQueue({ name: 'upload-video' }, { name: 'upload-image' }),
   ],
   providers: [
     LessonsResolver,
@@ -32,6 +32,7 @@ import { Queries } from './queries';
     NodemailerService,
     UsersService,
     BcryptService,
+    FfmpegService,
     ...Processors,
     ...Handlers,
     ...Queries,

@@ -19,13 +19,17 @@ export class Lesson {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Field()
-  @Column()
-  url: string;
+  @Field(() => Int)
+  @Column({ default: 0 })
+  order: number;
 
-  @Field()
-  @Column()
-  thumbnail: string;
+  @Field({ nullable: true })
+  @Column({ nullable: true })
+  url?: string;
+
+  @Field({ nullable: true })
+  @Column({ nullable: true })
+  thumbnail?: string;
 
   @Field()
   @Column()
@@ -44,9 +48,9 @@ export class Lesson {
   @ManyToMany(() => User, (user) => user.completedLessons)
   completedBy: User[];
 
-  @Field({ nullable: true })
+  @Field(() => Int, { nullable: true })
   @Column({ nullable: true })
-  duration?: string;
+  duration?: number;
 
   @Field(() => Course)
   @ManyToOne(() => Course, (course) => course.lessons)

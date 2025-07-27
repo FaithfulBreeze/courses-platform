@@ -28,9 +28,9 @@ export class Course {
   @Column()
   description: string;
 
-  @Field()
-  @Column()
-  thumbnail: string;
+  @Field({ nullable: true })
+  @Column({ nullable: true })
+  thumbnail?: string;
 
   @Field({ nullable: true })
   @Column({ nullable: true })
@@ -40,9 +40,9 @@ export class Course {
   @Column({ nullable: true })
   trailerDuration?: number;
 
-  @Field({ nullable: true })
+  @Field(() => Int, { nullable: true })
   @Column({ nullable: true })
-  duration?: string;
+  duration?: number;
 
   @Field()
   @ManyToOne(() => User, (owner) => owner.createdCourses)

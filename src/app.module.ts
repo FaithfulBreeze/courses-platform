@@ -1,10 +1,10 @@
-import { Module, OnModuleInit } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriverConfig } from '@nestjs/apollo';
 import { CoursesModule } from './courses/courses.module';
 import { ReviewsModule } from './reviews/reviews.module';
 import { UsersModule } from './users/users.module';
-import { InjectDataSource, TypeOrmModule } from '@nestjs/typeorm';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { LessonsModule } from './lessons/lessons.module';
 import { VercelCdnService } from './vercel-cdn/vercel-cdn.service';
 import { ConfigModule } from '@nestjs/config';
@@ -13,12 +13,11 @@ import { AuthModule } from './auth/auth.module';
 import { BcryptService } from './bcrypt/bcrypt.service';
 import { BullModule } from '@nestjs/bullmq';
 import { join } from 'path';
-import { seed } from '../test/seed';
-import { DataSource } from 'typeorm';
 import { environments } from './common/constants/environments';
 import { typeormConfigs } from './configs/typeorm';
 import { graphqlConfigs } from './configs/graphql';
 import { bullmqConfigs } from './configs/bullmq';
+import { FfmpegService } from './ffmpeg/ffmpeg.service';
 import 'dotenv/config';
 
 @Module({
@@ -39,6 +38,6 @@ import 'dotenv/config';
     AuthModule,
   ],
   controllers: [],
-  providers: [VercelCdnService, NodemailerService, BcryptService],
+  providers: [VercelCdnService, NodemailerService, BcryptService, FfmpegService],
 })
 export class AppModule {}
