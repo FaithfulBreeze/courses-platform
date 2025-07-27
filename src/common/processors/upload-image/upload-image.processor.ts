@@ -5,8 +5,8 @@ import { Job } from 'bullmq';
 import { Course } from '../../../courses/entities/course.entity';
 import { Lesson } from '../../../lessons/entities/lesson.entity';
 import { DataSource } from 'typeorm';
-import { VercelCdnService } from 'src/vercel-cdn/vercel-cdn.service';
-import { User } from 'src/users/entities/user.entity';
+import { VercelCdnService } from '../../../vercel-cdn/vercel-cdn.service';
+import { User } from '../../../users/entities/user.entity';
 
 @Processor('upload-image')
 export class UploadImageProcessor extends WorkerHost {
