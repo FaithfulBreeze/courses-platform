@@ -1,4 +1,4 @@
-import { IsInt, IsNotEmpty, IsNumberString, IsString, Length } from 'class-validator';
+import { IsInt, IsNotEmpty, IsString, Length } from 'class-validator';
 
 export class CreateLessonDto {
   @IsString()
@@ -11,12 +11,6 @@ export class CreateLessonDto {
   @IsNotEmpty()
   description: string;
 
-  @IsNotEmpty()
-  @IsNumberString()
+  @IsInt()
   courseId: number;
-}
-
-export class CreateLessonFilesDto {
-  video: Express.Multer.File[];
-  thumbnail: Express.Multer.File[];
 }

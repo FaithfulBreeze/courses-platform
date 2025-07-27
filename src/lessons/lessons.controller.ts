@@ -2,16 +2,17 @@ import {
   Body,
   Controller,
   HttpCode,
+  Param,
   ParseFilePipe,
+  ParseIntPipe,
   Post,
-  UploadedFiles,
+  UploadedFile,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { FileFieldsInterceptor } from '@nestjs/platform-express';
-import { CreateLessonDto, CreateLessonFilesDto } from './dto/create-lesson.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { CreateLessonDto } from './dto/create-lesson.dto';
 import { LessonsService } from './lessons.service';
-import { parseFileConfig } from '../common/utils/parse-file.utils';
 import { AuthGuard } from '../common/guards/auth/auth.guard';
 import { User } from '../common/decorators/user/user.decorator';
 
@@ -20,29 +21,34 @@ export class LessonsController {
   constructor(private readonly lessonsService: LessonsService) {}
 
   @Post()
+  @UseGuards(AuthGuard)
+  create(@User() userId: number, @Body() createLessonDto: CreateLessonDto) {
+    return this.lessonsService.create(createLessonDto, userId);
+  }
+
+  @Post(':id/upload/video')
   @HttpCode(202)
   @UseGuards(AuthGuard)
-  @UseInterceptors(
-    FileFieldsInterceptor([
-      { name: 'video', maxCount: 1 },
-      { name: 'thumbnail', maxCount: 1 },
-    ]),
-  )
-  create(
-    @User() id: number,
-    @Body() createLessonDto: CreateLessonDto,
-    @UploadedFiles(new ParseFilePipe(parseFileConfig(['video', 'thumbnail'])))
-    files: CreateLessonFilesDto,
+  @UseInterceptors(FileInterceptor('video', { limits: { fileSize: 5 * 1024 * 1024 * 1024 } }))
+  uploadLessonVideo(
+    @Param('id', ParseIntPipe) id: number,
+    @UploadedFile(new ParseFilePipe({ fileIsRequired: true }))
+    file: Express.Multer.File,
+    @User() userId: number,
   ) {
-    const video = {
-      content: files.video[0].buffer,
-      filename: files.video[0].originalname,
-    };
-    const thumbnail = {
-      content: files.thumbnail[0].buffer,
-      filename: files.thumbnail[0].originalname,
-    };
+    return this.lessonsService.uploadLessonVideo(id, file, userId);
+  }
 
-    return this.lessonsService.create(createLessonDto, id, video, thumbnail);
+  @Post(':id/upload/thumbnail')
+  @HttpCode(202)
+  @UseGuards(AuthGuard)
+  @UseInterceptors(FileInterceptor('thumbnail', { limits: { fileSize: 5 * 1024 * 1024 } }))
+  uploadLessonThumbnail(
+    @Param('id', ParseIntPipe) id: number,
+    @UploadedFile(new ParseFilePipe({ fileIsRequired: true }))
+    file: Express.Multer.File,
+    @User() userId: number,
+  ) {
+    return this.lessonsService.uploadLessonThumbnail(id, file, userId);
   }
 }

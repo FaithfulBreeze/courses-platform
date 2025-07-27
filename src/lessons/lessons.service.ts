@@ -19,7 +19,7 @@ export class LessonsService {
     private readonly lessonsRepository: Repository<Lesson>,
     private readonly queryBus: QueryBus,
     @InjectQueue('upload-video') private readonly uploadVideoQueue: Queue,
-    @InjectQueue('upload-thumbnail') private readonly uploadThumbnailQueue: Queue,
+    @InjectQueue('upload-image') private readonly uploadImageQueue: Queue,
   ) {}
 
   async create(createLessonDto: CreateLessonDto, userId: number) {
@@ -81,7 +81,7 @@ export class LessonsService {
     if (lesson.course.owner.id !== userId)
       throw new UnauthorizedException('You do not own this course');
 
-    this.uploadThumbnailQueue.add('upload-thumbnail', { file, lessonId: lesson.id });
+    this.uploadImageQueue.add('upload-image', { file, lessonId: lesson.id, type: 'lesson' });
 
     return {
       message: 'Thumbnail upload started',
