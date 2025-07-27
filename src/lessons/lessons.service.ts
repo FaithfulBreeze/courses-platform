@@ -10,7 +10,9 @@ import { QueryBus } from '@nestjs/cqrs';
 import { FindLessonCompletedUsers } from './queries/find-lesson-completed-users/find-lesson-completed-users.query';
 import { FindLessonCourse } from './queries/find-lesson-course/find-lesson-course.query';
 import { FindLessonReviews } from './queries/find-lesson-reviews/find-lesson-reviews.query';
-import { FindCourseOwner } from 'src/courses/queries/find-course-owner/find-course-owner.query';
+import { FindCourseOwner } from '../courses/queries/find-course-owner/find-course-owner.query';
+import { validateVideoFormat } from '..//common/utils/validate-video-format.util';
+import { validateImageFormat } from '..//common/utils/validate-image-format.util';
 
 @Injectable()
 export class LessonsService {
@@ -43,6 +45,7 @@ export class LessonsService {
   }
 
   async uploadLessonVideo(id: number, file: Express.Multer.File, userId: number) {
+    validateVideoFormat(file.mimetype);
     const lesson = await this.lessonsRepository.findOne({
       where: {
         id,
@@ -66,6 +69,7 @@ export class LessonsService {
   }
 
   async uploadLessonThumbnail(id: number, file: Express.Multer.File, userId: number) {
+    validateImageFormat(file.mimetype);
     const lesson = await this.lessonsRepository.findOne({
       where: {
         id,
