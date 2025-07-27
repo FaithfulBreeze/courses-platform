@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { spawn } from 'child_process';
 import { tmpdir } from 'os';
 import { extname, join } from 'path';
-import { mkdir, readdir, readFile, writeFile } from 'fs/promises';
+import { mkdir, readdir, readFile, rm, writeFile } from 'fs/promises';
 import { VercelCdnService } from 'src/vercel-cdn/vercel-cdn.service';
 import { randomUUID } from 'crypto';
 import { existsSync } from 'fs';
@@ -61,14 +61,29 @@ export class FfmpegService {
           const url = await this.cdnService.store({ filename: segment, content: segmentBuffer });
           playlist = playlist.replace(segment, url);
         }
+        await rm(outputPath, { recursive: true, force: true });
+        await rm(inputPath, { force: true });
 
         return resolve(playlist);
       });
     });
 
-    return await this.cdnService.store({
-      filename: `${tmpId}.m3u8`,
-      content: Buffer.from(playlist),
-    });
+    return {
+      url: await this.cdnService.store({
+        filename: `${tmpId}.m3u8`,
+        content: Buffer.from(playlist),
+      }),
+      duration: this.getPlaylistDuration(playlist),
+    };
+  }
+
+  private getPlaylistDuration(playlist: string) {
+    return Math.ceil(
+      playlist
+        .split('\n')
+        .filter((line) => line.startsWith('#EXTINF'))
+        .map((line) => parseFloat(line.replace('#EXTINF:', '').replace(',', '').trim()))
+        .reduce((sum, val) => sum + val, 0),
+    );
   }
 }
