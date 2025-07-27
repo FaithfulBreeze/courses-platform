@@ -1,3 +1,3 @@
-import { CreateLessonProcessor } from './create-lesson/create-lesson.processor';
+import { UploadVideoProcessor } from './upload-video/upload-video.processor';
 
-export const Processors = [CreateLessonProcessor];
+export const Processors = [UploadVideoProcessor];

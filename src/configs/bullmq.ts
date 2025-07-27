@@ -9,6 +9,7 @@ export const bullmqConfigs: Record<string, BullRootModuleOptions> = {
     },
     defaultJobOptions: {
       attempts: 1,
+      backoff: 2,
       removeOnFail: true,
     },
   },
@@ -18,6 +19,7 @@ export const bullmqConfigs: Record<string, BullRootModuleOptions> = {
     },
     defaultJobOptions: {
       attempts: 1,
+      backoff: 2,
       removeOnFail: true,
     },
   },
