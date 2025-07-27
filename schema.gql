@@ -46,7 +46,7 @@ type Lesson {
   description: String!
   reviews: [Review!]!
   completedBy: [User!]!
-  duration: String
+  duration: Int
   course: Course!
 }
 
@@ -54,10 +54,10 @@ type Course {
   id: Int!
   title: String!
   description: String!
-  thumbnail: String!
+  thumbnail: String
   trailer: String
   trailerDuration: Int
-  duration: String
+  duration: Int
   owner: User!
   reviews: [Review!]!
   students: [User!]!

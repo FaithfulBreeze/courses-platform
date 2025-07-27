@@ -21,11 +21,11 @@ export class Lesson {
 
   @Field({ nullable: true })
   @Column({ nullable: true })
-  url: string;
+  url?: string;
 
   @Field({ nullable: true })
   @Column({ nullable: true })
-  thumbnail: string;
+  thumbnail?: string;
 
   @Field()
   @Column()
@@ -44,9 +44,9 @@ export class Lesson {
   @ManyToMany(() => User, (user) => user.completedLessons)
   completedBy: User[];
 
-  @Field({ nullable: true })
+  @Field(() => Int, { nullable: true })
   @Column({ nullable: true })
-  duration?: string;
+  duration?: number;
 
   @Field(() => Course)
   @ManyToOne(() => Course, (course) => course.lessons)
