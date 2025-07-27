@@ -19,6 +19,10 @@ export class Lesson {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Field(() => Int)
+  @Column({ default: 0 })
+  order: number;
+
   @Field({ nullable: true })
   @Column({ nullable: true })
   url?: string;

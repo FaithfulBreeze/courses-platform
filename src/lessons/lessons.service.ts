@@ -1,18 +1,16 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { UpdateLessonInput } from './dto/update-lesson.input';
 import { CreateLessonDto } from './dto/create-lesson.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Lesson } from './entities/lesson.entity';
 import { Repository } from 'typeorm';
-import { NodemailerService } from '../nodemailer/nodemailer.service';
 import { InjectQueue } from '@nestjs/bullmq';
 import { Queue } from 'bullmq';
-import { Course } from '../courses/entities/course.entity';
-import { User } from '../users/entities/user.entity';
 import { QueryBus } from '@nestjs/cqrs';
 import { FindLessonCompletedUsers } from './queries/find-lesson-completed-users/find-lesson-completed-users.query';
 import { FindLessonCourse } from './queries/find-lesson-course/find-lesson-course.query';
 import { FindLessonReviews } from './queries/find-lesson-reviews/find-lesson-reviews.query';
+import { FindCourseOwner } from 'src/courses/queries/find-course-owner/find-course-owner.query';
 
 @Injectable()
 export class LessonsService {
@@ -20,29 +18,73 @@ export class LessonsService {
     @InjectRepository(Lesson)
     private readonly lessonsRepository: Repository<Lesson>,
     private readonly queryBus: QueryBus,
-    @InjectQueue('create-lesson') private readonly queue: Queue,
-    private readonly mailerService: NodemailerService,
+    @InjectQueue('upload-video') private readonly uploadVideoQueue: Queue,
+    @InjectQueue('upload-thumbnail') private readonly uploadThumbnailQueue: Queue,
   ) {}
 
-  async create(
-    createLessonDto: CreateLessonDto,
-    userId: number,
-    video: { content: Buffer; filename: string },
-    thumbnail: { content: Buffer; filename: string },
-  ) {
-    const isValid = await this.validateLessonCreation(createLessonDto, userId);
+  async create(createLessonDto: CreateLessonDto, userId: number) {
+    const courseOwner = await this.queryBus.execute(new FindCourseOwner(createLessonDto.courseId));
 
-    if (!isValid) throw new BadRequestException('Invalid lesson creation request');
-    const job = await this.queue.add('create-lesson', {
-      createLessonDto,
-      userId,
-      video,
-      thumbnail,
+    if (courseOwner.id !== userId) throw new UnauthorizedException('You do not own this course');
+
+    const [lastCreatedLesson] = await this.lessonsRepository.find({
+      order: {
+        order: 'DESC',
+      },
+      take: 1,
     });
 
+    const createdLesson = this.lessonsRepository.create({
+      ...createLessonDto,
+      order: lastCreatedLesson ? lastCreatedLesson.order + 1 : 0,
+    });
+
+    return await this.lessonsRepository.save(createdLesson);
+  }
+
+  async uploadLessonVideo(id: number, file: Express.Multer.File, userId: number) {
+    const lesson = await this.lessonsRepository.findOne({
+      where: {
+        id,
+      },
+      relations: {
+        course: {
+          owner: true,
+        },
+      },
+    });
+
+    if (!lesson) throw new NotFoundException('Lesson not found');
+    if (lesson.course.owner.id !== userId)
+      throw new UnauthorizedException('You do not own this course');
+
+    this.uploadVideoQueue.add('upload-video', { file, id, type: 'lesson' });
+
     return {
-      message: 'Your lesson creation request is being processed',
-      job: job.id,
+      message: 'Video upload started',
+    };
+  }
+
+  async uploadLessonThumbnail(id: number, file: Express.Multer.File, userId: number) {
+    const lesson = await this.lessonsRepository.findOne({
+      where: {
+        id,
+      },
+      relations: {
+        course: {
+          owner: true,
+        },
+      },
+    });
+
+    if (!lesson) throw new NotFoundException('Lesson not found');
+    if (lesson.course.owner.id !== userId)
+      throw new UnauthorizedException('You do not own this course');
+
+    this.uploadThumbnailQueue.add('upload-thumbnail', { file, lessonId: lesson.id });
+
+    return {
+      message: 'Thumbnail upload started',
     };
   }
 
@@ -76,35 +118,5 @@ export class LessonsService {
 
   remove(id: number) {
     return `This action removes a #${id} lesson`;
-  }
-
-  private async validateLessonCreation(createLessonDto: CreateLessonDto, userId: number) {
-    const course = await this.getCourseByIdAndUserId(createLessonDto.courseId, userId);
-
-    if (!course) await this.handleCourseNotFound(createLessonDto.courseId, userId);
-
-    return course ? true : false;
-  }
-
-  private async getCourseByIdAndUserId(courseId: number, userId: number) {
-    return await this.lessonsRepository.manager.findOne(Course, {
-      where: { id: courseId, owner: { id: userId } },
-      relations: {
-        owner: true,
-      },
-    });
-  }
-
-  private async handleCourseNotFound(courseId: number, userId: number) {
-    const user = await this.lessonsRepository.manager.findOne(User, {
-      where: { id: userId },
-    });
-
-    if (!user) return;
-    this.mailerService.sendMail({
-      addressee: user.email,
-      subject: 'Course Not Found',
-      content: `The course with ID ${courseId} was not found or you do not have permission to access it.`,
-    });
   }
 }
