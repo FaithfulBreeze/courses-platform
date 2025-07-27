@@ -17,11 +17,11 @@ export class CoursePurchasedEventHandler implements IEventHandler<CoursePurchase
   ) {}
   async handle(event: CoursePurchasedEvent) {
     const user = await this.usersRepository.findOne({
-      where: { id: event.purchaseCourseDto.userId },
+      where: { id: event.userId },
     });
 
     const course = await this.coursesRepository.findOne({
-      where: { id: event.purchaseCourseDto.courseId },
+      where: { id: event.courseId },
       relations: { owner: true },
     });
 

@@ -1,6 +1,5 @@
 import { ConflictException, NotFoundException } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { PurchaseCourseDto } from '../../../courses/dto/purchase-course.dto';
 import { CoursePurchase } from '../../../courses/entities/course-purchase.entity';
 import { Course } from '../../../courses/entities/course.entity';
 import { User } from '../../../users/entities/user.entity';
@@ -8,19 +7,20 @@ import { EntityManager } from 'typeorm';
 
 export class RegisterCoursePurchaseCommand {
   constructor(
-    public readonly purchaseCourseDto: PurchaseCourseDto,
+    public readonly courseId: number,
+    public readonly userId: number,
     public readonly manager: EntityManager,
   ) {}
 }
 
 @CommandHandler(RegisterCoursePurchaseCommand)
 export class RegisterCoursePurchaseCommandHandler
-  implements ICommandHandler<RegisterCoursePurchaseCommand, CoursePurchase>
+  implements ICommandHandler<RegisterCoursePurchaseCommand, Partial<CoursePurchase>>
 {
-  async execute(command: RegisterCoursePurchaseCommand): Promise<CoursePurchase> {
+  async execute(command: RegisterCoursePurchaseCommand): Promise<Partial<CoursePurchase>> {
     const user = await command.manager.findOne(User, {
       where: {
-        id: command.purchaseCourseDto.userId,
+        id: command.userId,
       },
     });
 
@@ -28,7 +28,7 @@ export class RegisterCoursePurchaseCommandHandler
 
     const course = await command.manager.findOne(Course, {
       where: {
-        id: command.purchaseCourseDto.courseId,
+        id: command.courseId,
       },
     });
 
@@ -36,8 +36,8 @@ export class RegisterCoursePurchaseCommandHandler
 
     const coursePurchase = await command.manager.findOne(CoursePurchase, {
       where: {
-        user: { id: command.purchaseCourseDto.userId },
-        course: { id: command.purchaseCourseDto.courseId },
+        user: { id: command.userId },
+        course: { id: command.courseId },
       },
       relations: {
         user: true,
@@ -45,13 +45,15 @@ export class RegisterCoursePurchaseCommandHandler
       },
     });
 
-    if (coursePurchase) throw new ConflictException('This user already purchased this course');
+    if (coursePurchase) throw new ConflictException('You already purchased this course');
 
     const createdCoursePurchase = command.manager.create(CoursePurchase, {
       course,
       user,
     });
 
-    return await command.manager.save(createdCoursePurchase);
+    const savedCoursePurchase = await command.manager.save(createdCoursePurchase);
+
+    return { ...savedCoursePurchase, user: undefined };
   }
 }

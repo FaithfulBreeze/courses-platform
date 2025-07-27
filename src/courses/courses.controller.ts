@@ -1,9 +1,8 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Param, ParseIntPipe, Post, UseGuards } from '@nestjs/common';
 import { CoursesService } from './courses.service';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { User } from '../common/decorators/user/user.decorator';
 import { AuthGuard } from '../common/guards/auth/auth.guard';
-import { PurchaseCourseDto } from './dto/purchase-course.dto';
 
 @Controller('courses')
 export class CoursesController {
@@ -15,9 +14,9 @@ export class CoursesController {
     return this.coursesService.create(createCourseDto, userId);
   }
 
-  @Post('/purchase')
+  @Post(':id/purchase')
   @UseGuards(AuthGuard)
-  purchase(purchaseCourseDto: PurchaseCourseDto) {
-    return this.coursesService.purchase(purchaseCourseDto);
+  purchase(@Param('id', ParseIntPipe) id: number, @User() userId: number) {
+    return this.coursesService.purchase(id, userId);
   }
 }

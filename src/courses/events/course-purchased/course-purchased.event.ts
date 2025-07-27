@@ -1,5 +1,6 @@
-import { PurchaseCourseDto } from '../../../courses/dto/purchase-course.dto';
-
 export class CoursePurchasedEvent {
-  constructor(public readonly purchaseCourseDto: PurchaseCourseDto) {}
+  constructor(
+    public readonly courseId: number,
+    public readonly userId: number,
+  ) {}
 }
