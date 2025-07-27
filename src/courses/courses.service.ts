@@ -8,7 +8,6 @@ import { FindCourseOwner } from './queries/find-course-owner/find-course-owner.q
 import { FindCourseStudents } from './queries/find-course-students/find-course-students.query';
 import { FindCourseLessons } from './queries/find-course-lessons/find-course-lessons.query';
 import { FindCourseReviews } from './queries/find-course-reviews/find-course-reviews.query';
-import { PurchaseCourseDto } from './dto/purchase-course.dto';
 import { RegisterCoursePurchaseCommand } from './commands/register-course-purchase/register-course-purchase.command';
 import { UpdateUserPurchasedCoursesCommand } from '../users/commands/update-user-purchased-courses/update-user-purchased-courses.command';
 import { CoursePurchasedEvent } from './events/course-purchased/course-purchased.event';
@@ -32,19 +31,19 @@ export class CoursesService {
     return this.coursesRepository.save(createdCourse);
   }
 
-  async purchase(purchaseCourseDto: PurchaseCourseDto) {
+  async purchase(courseId: number, userId: number) {
     const coursePurchase = await this.coursesRepository.manager.transaction(async (manager) => {
       const coursePurchase = await this.commandBus.execute(
-        new RegisterCoursePurchaseCommand(purchaseCourseDto, manager),
+        new RegisterCoursePurchaseCommand(courseId, userId, manager),
       );
       await this.commandBus.execute(
-        new UpdateUserPurchasedCoursesCommand(purchaseCourseDto, manager),
+        new UpdateUserPurchasedCoursesCommand(courseId, userId, manager),
       );
 
       return coursePurchase;
     });
 
-    if (coursePurchase) this.eventBus.publish(new CoursePurchasedEvent(purchaseCourseDto));
+    if (coursePurchase) this.eventBus.publish(new CoursePurchasedEvent(courseId, userId));
 
     return coursePurchase;
   }

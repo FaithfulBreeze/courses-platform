@@ -1,13 +1,13 @@
 import { NotFoundException } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { PurchaseCourseDto } from '../../../courses/dto/purchase-course.dto';
 import { Course } from '../../../courses/entities/course.entity';
 import { User } from '../../../users/entities/user.entity';
 import { EntityManager } from 'typeorm';
 
 export class UpdateUserPurchasedCoursesCommand {
   constructor(
-    public readonly purchaseCourseDto: PurchaseCourseDto,
+    public readonly courseId: number,
+    public readonly userId: number,
     public readonly manager: EntityManager,
   ) {}
 }
@@ -19,7 +19,7 @@ export class UpdateUserPurchasedCoursesCommandHandler
   async execute(command: UpdateUserPurchasedCoursesCommand): Promise<void> {
     const user = await command.manager.findOne(User, {
       where: {
-        id: command.purchaseCourseDto.userId,
+        id: command.userId,
       },
       relations: {
         purchasedCourses: true,
@@ -30,7 +30,7 @@ export class UpdateUserPurchasedCoursesCommandHandler
 
     const course = await command.manager.findOne(Course, {
       where: {
-        id: command.purchaseCourseDto.courseId,
+        id: command.courseId,
       },
       relations: {
         students: true,
