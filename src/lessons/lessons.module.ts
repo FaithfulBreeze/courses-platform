@@ -16,7 +16,7 @@ import { BullModule } from '@nestjs/bullmq';
 import { Handlers } from './events';
 import { Processors } from './processors';
 import { Queries } from './queries';
-import { FfmpegService } from 'src/ffmpeg/ffmpeg.service';
+import { FfmpegService } from '../ffmpeg/ffmpeg.service';
 
 @Module({
   imports: [

@@ -7,7 +7,7 @@ import { FfmpegService } from '../../../ffmpeg/ffmpeg.service';
 import { Lesson } from '../../../lessons/entities/lesson.entity';
 import { DataSource } from 'typeorm';
 import { EventBus } from '@nestjs/cqrs';
-import { LessonVideoUploadedEvent } from 'src/lessons/events/lesson-video-uploaded/lesson-video-uploaded.event';
+import { LessonVideoUploadedEvent } from '../../../lessons/events/lesson-video-uploaded/lesson-video-uploaded.event';
 
 @Processor('upload-video')
 export class UploadVideoProcessor extends WorkerHost {

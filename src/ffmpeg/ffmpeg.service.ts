@@ -3,7 +3,7 @@ import { spawn } from 'child_process';
 import { tmpdir } from 'os';
 import { extname, join } from 'path';
 import { mkdir, readdir, readFile, rm, writeFile } from 'fs/promises';
-import { VercelCdnService } from 'src/vercel-cdn/vercel-cdn.service';
+import { VercelCdnService } from '../vercel-cdn/vercel-cdn.service';
 import { randomUUID } from 'crypto';
 import { existsSync } from 'fs';
 
