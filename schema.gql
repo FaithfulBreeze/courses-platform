@@ -40,6 +40,7 @@ type User {
 
 type Lesson {
   id: Int!
+  order: Int!
   url: String
   thumbnail: String
   title: String!
@@ -54,6 +55,7 @@ type Course {
   id: Int!
   title: String!
   description: String!
+  price: Int!
   thumbnail: String
   trailer: String
   trailerDuration: Int
