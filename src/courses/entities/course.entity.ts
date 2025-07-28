@@ -28,6 +28,10 @@ export class Course {
   @Column()
   description: string;
 
+  @Field(() => Int)
+  @Column({ default: 0 })
+  price?: number;
+
   @Field({ nullable: true })
   @Column({ nullable: true })
   thumbnail?: string;
@@ -44,7 +48,7 @@ export class Course {
   @Column({ nullable: true })
   duration?: number;
 
-  @Field()
+  @Field(() => User)
   @ManyToOne(() => User, (owner) => owner.createdCourses)
   @JoinColumn()
   owner: User;
