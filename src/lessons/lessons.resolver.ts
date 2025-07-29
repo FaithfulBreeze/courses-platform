@@ -10,8 +10,11 @@ export class LessonsResolver {
   constructor(private readonly lessonsService: LessonsService) {}
 
   @Query(() => [Lesson], { name: 'lessons' })
-  findAll() {
-    return this.lessonsService.findAll();
+  findAll(
+    @Args('page', { type: () => Int, nullable: true }) page?: number,
+    @Args('limit', { type: () => Int, nullable: true }) limit?: number,
+  ) {
+    return this.lessonsService.findAll(page, limit);
   }
 
   @Query(() => Lesson, { name: 'lesson', nullable: true })
@@ -32,5 +35,10 @@ export class LessonsResolver {
   @ResolveField(() => [Review], { name: 'reviews' })
   findLessonReviews(@Parent() parent: Lesson) {
     return this.lessonsService.findLessonReviews(parent.id);
+  }
+
+  @ResolveField(() => Int, { name: 'count' })
+  findLessonCount() {
+    return this.lessonsService.findLessonCount();
   }
 }

@@ -49,6 +49,7 @@ type Lesson {
   completedBy: [User!]!
   duration: Int
   course: Course!
+  count: Int!
 }
 
 type Course {
@@ -63,7 +64,7 @@ type Course {
   owner: User!
   reviews: [Review!]!
   students: [User!]!
-  lessons: [Lesson!]!
+  lessons(page: Int, limit: Int): [Lesson!]!
   coursePurchases: [CoursePurchase!]!
 }
 
@@ -74,7 +75,7 @@ type Query {
   review(id: Int!): Review!
   users: [User!]!
   user(id: Int!): User
-  lessons: [Lesson!]!
+  lessons(page: Int, limit: Int): [Lesson!]!
   lesson(id: Int!): Lesson
 }
 

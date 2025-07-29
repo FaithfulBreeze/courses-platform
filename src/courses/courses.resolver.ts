@@ -31,8 +31,12 @@ export class CoursesResolver {
   }
 
   @ResolveField(() => [Lesson], { name: 'lessons' })
-  findCourseLessons(@Parent() parent: Course) {
-    return this.coursesService.findCourseLessons(parent.id);
+  findCourseLessons(
+    @Parent() parent: Course,
+    @Args('page', { type: () => Int, nullable: true }) page?: number,
+    @Args('limit', { type: () => Int, nullable: true }) limit?: number,
+  ) {
+    return this.coursesService.findCourseLessons(parent.id, page, limit);
   }
 
   @ResolveField(() => [Review], { name: 'reviews' })
