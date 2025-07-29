@@ -30,6 +30,11 @@ export class LessonsService {
     if (courseOwner.id !== userId) throw new UnauthorizedException('You do not own this course');
 
     const [lastCreatedLesson] = await this.lessonsRepository.find({
+      where: {
+        course: {
+          id: createLessonDto.courseId,
+        },
+      },
       order: {
         order: 'DESC',
       },
@@ -92,8 +97,16 @@ export class LessonsService {
     };
   }
 
-  findAll() {
-    return this.lessonsRepository.find();
+  findAll(page?: number, limit?: number) {
+    return this.lessonsRepository.find({
+      order: { order: 'ASC' },
+      take: limit || 10,
+      skip: page ? (page - 1) * (limit || 10) : 0,
+    });
+  }
+
+  findLessonCount() {
+    return this.lessonsRepository.count();
   }
 
   findLessonCourse(id: number) {

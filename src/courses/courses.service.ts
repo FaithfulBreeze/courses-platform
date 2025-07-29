@@ -77,8 +77,8 @@ export class CoursesService {
     });
   }
 
-  findCourseLessons(id: number) {
-    return this.queryBus.execute(new FindCourseLessons(id));
+  findCourseLessons(id: number, page?: number, limit?: number) {
+    return this.queryBus.execute(new FindCourseLessons(id, page, limit));
   }
 
   findCourseReviews(id: number) {
