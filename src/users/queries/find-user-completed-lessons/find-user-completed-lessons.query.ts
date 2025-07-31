@@ -4,16 +4,16 @@ import { Lesson } from '../../../lessons/entities/lesson.entity';
 import { User } from '../../../users/entities/user.entity';
 import { DataSource } from 'typeorm';
 
-export class FindUserCompletedLessons {
+export class FindUserCompletedLessonsQuery {
   constructor(public readonly userId: number) {}
 }
 
-@QueryHandler(FindUserCompletedLessons)
-export class FindUserCompletedLessonsHandler
-  implements IQueryHandler<FindUserCompletedLessons, Lesson[]>
+@QueryHandler(FindUserCompletedLessonsQuery)
+export class FindUserCompletedLessonsQueryHandler
+  implements IQueryHandler<FindUserCompletedLessonsQuery, Lesson[]>
 {
   constructor(@InjectDataSource() private readonly dataSource: DataSource) {}
-  async execute(query: FindUserCompletedLessons) {
+  async execute(query: FindUserCompletedLessonsQuery) {
     const user = await this.dataSource.manager.findOne(User, {
       where: {
         id: query.userId,
