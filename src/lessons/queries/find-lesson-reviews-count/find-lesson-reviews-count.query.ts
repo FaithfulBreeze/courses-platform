@@ -3,7 +3,7 @@ import { InjectDataSource } from '@nestjs/typeorm';
 import { Review } from '../../../reviews/entities/review.entity';
 import { DataSource } from 'typeorm';
 
-export class FindLessonReviews {
+export class FindLessonReviewsCountQuery {
   constructor(
     public readonly lessonId: number,
     public readonly page?: number,
@@ -11,11 +11,13 @@ export class FindLessonReviews {
   ) {}
 }
 
-@QueryHandler(FindLessonReviews)
-export class FindLessonReviewsHandler implements IQueryHandler<FindLessonReviews, Review[]> {
+@QueryHandler(FindLessonReviewsCountQuery)
+export class FindLessonReviewsCountQueryHandler
+  implements IQueryHandler<FindLessonReviewsCountQuery, number>
+{
   constructor(@InjectDataSource() private readonly dataSource: DataSource) {}
-  async execute(query: FindLessonReviews) {
-    const reviews = await this.dataSource.manager.find(Review, {
+  async execute(query: FindLessonReviewsCountQuery) {
+    return await this.dataSource.manager.count(Review, {
       where: { lesson: { id: query.lessonId } },
       relations: {
         lesson: true,
@@ -23,7 +25,5 @@ export class FindLessonReviewsHandler implements IQueryHandler<FindLessonReviews
       skip: query.page ? (query.page - 1) * (query.limit || 10) : undefined,
       take: query.limit || 10,
     });
-
-    return reviews;
   }
 }

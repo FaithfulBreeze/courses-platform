@@ -11,8 +11,9 @@ import { FindLessonCompletedUsers } from './queries/find-lesson-completed-users/
 import { FindLessonCourse } from './queries/find-lesson-course/find-lesson-course.query';
 import { FindLessonReviews } from './queries/find-lesson-reviews/find-lesson-reviews.query';
 import { FindCourseOwner } from '../courses/queries/find-course-owner/find-course-owner.query';
-import { validateVideoFormat } from '..//common/utils/validate-video-format.util';
-import { validateImageFormat } from '..//common/utils/validate-image-format.util';
+import { validateVideoFormat } from '../common/utils/validate-video-format.util';
+import { validateImageFormat } from '../common/utils/validate-image-format.util';
+import { FindLessonReviewsCountQuery } from './queries/find-lesson-reviews-count/find-lesson-reviews-count.query';
 
 @Injectable()
 export class LessonsService {
@@ -117,8 +118,12 @@ export class LessonsService {
     return this.queryBus.execute(new FindLessonCompletedUsers(id));
   }
 
-  findLessonReviews(id: number) {
-    return this.queryBus.execute(new FindLessonReviews(id));
+  findLessonReviews(id: number, page?: number, limit?: number) {
+    return this.queryBus.execute(new FindLessonReviews(id, page, limit));
+  }
+
+  findLessonReviewsCount(id: number) {
+    return this.queryBus.execute(new FindLessonReviewsCountQuery(id));
   }
 
   findOne(id: number) {
