@@ -29,6 +29,14 @@ export class UsersResolver {
     return this.usersService.findUserCompletedLessons(parent.id);
   }
 
+  @ResolveField(() => [Lesson], { name: 'completedCourseLessons' })
+  findUserCompletedCourseLessons(
+    @Parent() parent: User,
+    @Args('courseId', { type: () => Int }) courseId: number,
+  ) {
+    return this.usersService.findUserCompletedCourseLessons(parent.id, courseId);
+  }
+
   @ResolveField(() => [CoursePurchase], { name: 'lastCoursePurchases' })
   findUserLastCoursePurchases(
     @Parent() parent: User,

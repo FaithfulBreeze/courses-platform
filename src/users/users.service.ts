@@ -12,9 +12,10 @@ import { BcryptService } from '../bcrypt/bcrypt.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { QueryBus } from '@nestjs/cqrs';
 import { FindUserPurchasedCoursesQuery } from './queries/find-user-purchased-courses/find-user-purchased-courses.query';
-import { FindUserCompletedLessons } from './queries/find-user-completed-lessons/find-user-completed-lessons.query';
+import { FindUserCompletedLessonsQuery } from './queries/find-user-completed-lessons/find-user-completed-lessons.query';
 import { CoursePurchase } from '../courses/entities/course-purchase.entity';
 import { UpdateUserLastWatchedLessonDto } from './dto/update-user-last-watched-lesson.dto';
+import { FindUserCourseCompletedLessonsQuery } from './queries/find-user-course-completed-lessons/find-user-course-completed-lessons.query';
 
 @Injectable()
 export class UsersService {
@@ -55,7 +56,11 @@ export class UsersService {
   }
 
   findUserCompletedLessons(id: number) {
-    return this.queryBus.execute(new FindUserCompletedLessons(id));
+    return this.queryBus.execute(new FindUserCompletedLessonsQuery(id));
+  }
+
+  findUserCompletedCourseLessons(id: number, courseId: number) {
+    return this.queryBus.execute(new FindUserCourseCompletedLessonsQuery(id, courseId));
   }
 
   async findUserLastCoursePurchases(id: number, limit: number) {
