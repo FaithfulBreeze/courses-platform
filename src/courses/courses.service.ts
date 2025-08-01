@@ -11,6 +11,8 @@ import { FindCourseReviews } from './queries/find-course-reviews/find-course-rev
 import { RegisterCoursePurchaseCommand } from './commands/register-course-purchase/register-course-purchase.command';
 import { UpdateUserPurchasedCoursesCommand } from '../users/commands/update-user-purchased-courses/update-user-purchased-courses.command';
 import { CoursePurchasedEvent } from './events/course-purchased/course-purchased.event';
+import { FindCourseLessonsCount } from './queries/find-course-lessons-count/find-course-lessons-count.query';
+import { FindCourseReviewsCountQuery } from './queries/find-course-reviews-count/find-course-reviews-count.query';
 
 @Injectable()
 export class CoursesService {
@@ -81,7 +83,15 @@ export class CoursesService {
     return this.queryBus.execute(new FindCourseLessons(id, page, limit));
   }
 
-  findCourseReviews(id: number) {
-    return this.queryBus.execute(new FindCourseReviews(id));
+  findCourseLessonsCount(id: number) {
+    return this.queryBus.execute(new FindCourseLessonsCount(id));
+  }
+
+  findCourseReviews(id: number, page?: number, limit?: number) {
+    return this.queryBus.execute(new FindCourseReviews(id, page, limit));
+  }
+
+  findCourseReviewsCount(id: number) {
+    return this.queryBus.execute(new FindCourseReviewsCountQuery(id));
   }
 }

@@ -39,9 +39,23 @@ export class CoursesResolver {
     return this.coursesService.findCourseLessons(parent.id, page, limit);
   }
 
+  @ResolveField(() => Int, { name: 'lessonsCount' })
+  findCourseLessonsCount(@Parent() parent: Course) {
+    return this.coursesService.findCourseLessonsCount(parent.id);
+  }
+
   @ResolveField(() => [Review], { name: 'reviews' })
-  findCourseReviews(@Parent() parent: Course) {
-    return this.coursesService.findCourseReviews(parent.id);
+  findCourseReviews(
+    @Parent() parent: Course,
+    @Args('page', { type: () => Int, nullable: true }) page?: number,
+    @Args('limit', { type: () => Int, nullable: true }) limit?: number,
+  ) {
+    return this.coursesService.findCourseReviews(parent.id, page, limit);
+  }
+
+  @ResolveField(() => Int, { name: 'reviewsCount' })
+  findCourseReviewsCount(@Parent() parent: Course) {
+    return this.coursesService.findCourseReviewsCount(parent.id);
   }
 }
 

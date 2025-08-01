@@ -1,26 +1,29 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectDataSource } from '@nestjs/typeorm';
-import { Course } from '../../../courses/entities/course.entity';
 import { Review } from '../../../reviews/entities/review.entity';
 import { DataSource } from 'typeorm';
 
 export class FindCourseReviews {
-  constructor(public readonly courseId: number) {}
+  constructor(
+    public readonly courseId: number,
+    public readonly page?: number,
+    public readonly limit?: number,
+  ) {}
 }
 
 @QueryHandler(FindCourseReviews)
 export class FindCourseReviewsHandler implements IQueryHandler<FindCourseReviews, Review[]> {
   constructor(@InjectDataSource() private readonly dataSource: DataSource) {}
   async execute(query: FindCourseReviews) {
-    const course = await this.dataSource.manager.findOne(Course, {
-      where: {
-        id: query.courseId,
-      },
+    const reviews = await this.dataSource.manager.find(Review, {
+      where: { course: { id: query.courseId } },
       relations: {
-        reviews: true,
+        course: true,
       },
+      skip: query.page ? (query.page - 1) * (query.limit || 10) : undefined,
+      take: query.limit || 10,
     });
 
-    return course?.reviews || [];
+    return reviews;
   }
 }
