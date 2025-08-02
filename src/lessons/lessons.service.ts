@@ -7,13 +7,13 @@ import { Repository } from 'typeorm';
 import { InjectQueue } from '@nestjs/bullmq';
 import { Queue } from 'bullmq';
 import { QueryBus } from '@nestjs/cqrs';
-import { FindLessonCompletedUsers } from './queries/find-lesson-completed-users/find-lesson-completed-users.query';
-import { FindLessonCourse } from './queries/find-lesson-course/find-lesson-course.query';
-import { FindLessonReviews } from './queries/find-lesson-reviews/find-lesson-reviews.query';
-import { FindCourseOwner } from '../courses/queries/find-course-owner/find-course-owner.query';
 import { validateVideoFormat } from '../common/utils/validate-video-format.util';
 import { validateImageFormat } from '../common/utils/validate-image-format.util';
 import { FindLessonReviewsCountQuery } from './queries/find-lesson-reviews-count/find-lesson-reviews-count.query';
+import { FindCourseOwnerQuery } from '../courses/queries/find-course-owner/find-course-owner.query';
+import { FindLessonCourseQuery } from './queries/find-lesson-course/find-lesson-course.query';
+import { FindLessonCompletedUsersQuery } from './queries/find-lesson-completed-users/find-lesson-completed-users.query';
+import { FindLessonReviewsQuery } from './queries/find-lesson-reviews/find-lesson-reviews.query';
 
 @Injectable()
 export class LessonsService {
@@ -26,7 +26,7 @@ export class LessonsService {
   ) {}
 
   async create(createLessonDto: CreateLessonDto, userId: number) {
-    const courseOwner = await this.queryBus.execute(new FindCourseOwner(createLessonDto.courseId));
+    const courseOwner = await this.queryBus.execute(new FindCourseOwnerQuery(createLessonDto.courseId));
 
     if (courseOwner.id !== userId) throw new UnauthorizedException('You do not own this course');
 
@@ -111,15 +111,15 @@ export class LessonsService {
   }
 
   findLessonCourse(id: number) {
-    return this.queryBus.execute(new FindLessonCourse(id));
+    return this.queryBus.execute(new FindLessonCourseQuery(id));
   }
 
   findLessonCompletedUsers(id: number) {
-    return this.queryBus.execute(new FindLessonCompletedUsers(id));
+    return this.queryBus.execute(new FindLessonCompletedUsersQuery(id));
   }
 
   findLessonReviews(id: number, page?: number, limit?: number) {
-    return this.queryBus.execute(new FindLessonReviews(id, page, limit));
+    return this.queryBus.execute(new FindLessonReviewsQuery(id, page, limit));
   }
 
   findLessonReviewsCount(id: number) {

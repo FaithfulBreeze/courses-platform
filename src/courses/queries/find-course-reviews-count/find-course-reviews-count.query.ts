@@ -7,7 +7,7 @@ export class FindCourseReviewsCountQuery {
   constructor(public readonly courseId: number) {}
 }
 @QueryHandler(FindCourseReviewsCountQuery)
-export class FindCourseReviewsCountHandler
+export class FindCourseReviewsCountQueryHandler
   implements IQueryHandler<FindCourseReviewsCountQuery, number>
 {
   constructor(@InjectDataSource() private readonly dataSource: DataSource) {}

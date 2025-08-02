@@ -4,14 +4,14 @@ import { Review } from '../../../reviews/entities/review.entity';
 import { User } from '../../../users/entities/user.entity';
 import { DataSource } from 'typeorm';
 
-export class FindReviewOwner {
+export class FindReviewOwnerQuery {
   constructor(public readonly reviewId: number) {}
 }
 
-@QueryHandler(FindReviewOwner)
-export class FindReviewOwnerHandler implements IQueryHandler<FindReviewOwner, User | undefined> {
+@QueryHandler(FindReviewOwnerQuery)
+export class FindReviewOwnerQueryHandler implements IQueryHandler<FindReviewOwnerQuery, User | undefined> {
   constructor(@InjectDataSource() private readonly dataSource: DataSource) {}
-  async execute(query: FindReviewOwner) {
+  async execute(query: FindReviewOwnerQuery) {
     const review = await this.dataSource.manager.findOne(Review, {
       where: {
         id: query.reviewId,
