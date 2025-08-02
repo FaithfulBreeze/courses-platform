@@ -3,14 +3,14 @@ import { InjectDataSource } from '@nestjs/typeorm';
 import { User } from '../../../users/entities/user.entity';
 import { DataSource } from 'typeorm';
 
-export class FindCourseOwner {
+export class FindCourseOwnerQuery {
   constructor(public readonly courseId: number) {}
 }
 
-@QueryHandler(FindCourseOwner)
-export class FindCourseOwnerHandler implements IQueryHandler<FindCourseOwner, User | null> {
+@QueryHandler(FindCourseOwnerQuery)
+export class FindCourseOwnerQueryHandler implements IQueryHandler<FindCourseOwnerQuery, User | null> {
   constructor(@InjectDataSource() private readonly dataSource: DataSource) {}
-  execute(query: FindCourseOwner) {
+  execute(query: FindCourseOwnerQuery) {
     return this.dataSource.manager.findOne(User, {
       where: {
         createdCourses: {

@@ -1,3 +1,3 @@
-import { FindReviewOwnerHandler } from './find-review-owner/find-review-owner.query';
+import { FindReviewOwnerQueryHandler } from "./find-review-owner/find-review-owner.query";
 
-export const Queries = [FindReviewOwnerHandler];
+export const Queries = [FindReviewOwnerQueryHandler];

@@ -3,7 +3,7 @@ import { InjectDataSource } from '@nestjs/typeorm';
 import { Lesson } from '../../../lessons/entities/lesson.entity';
 import { DataSource } from 'typeorm';
 
-export class FindCourseLessonsCount {
+export class FindCourseLessonsCountQuery {
   constructor(
     public readonly courseId: number,
     public readonly page?: number,
@@ -11,12 +11,12 @@ export class FindCourseLessonsCount {
   ) {}
 }
 
-@QueryHandler(FindCourseLessonsCount)
-export class FindCourseLessonsCountHandler
-  implements IQueryHandler<FindCourseLessonsCount, number>
+@QueryHandler(FindCourseLessonsCountQuery)
+export class FindCourseLessonsCountQueryHandler
+  implements IQueryHandler<FindCourseLessonsCountQuery, number>
 {
   constructor(@InjectDataSource() private readonly dataSource: DataSource) {}
-  async execute(query: FindCourseLessonsCount) {
+  async execute(query: FindCourseLessonsCountQuery) {
     const lessonsCount = await this.dataSource.manager.count(Lesson, {
       where: {
         course: {

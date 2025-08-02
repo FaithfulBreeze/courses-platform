@@ -4,15 +4,15 @@ import { Repository } from 'typeorm';
 import { Course } from './entities/course.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CommandBus, EventBus, QueryBus } from '@nestjs/cqrs';
-import { FindCourseOwner } from './queries/find-course-owner/find-course-owner.query';
-import { FindCourseStudents } from './queries/find-course-students/find-course-students.query';
-import { FindCourseLessons } from './queries/find-course-lessons/find-course-lessons.query';
-import { FindCourseReviews } from './queries/find-course-reviews/find-course-reviews.query';
 import { RegisterCoursePurchaseCommand } from './commands/register-course-purchase/register-course-purchase.command';
 import { UpdateUserPurchasedCoursesCommand } from '../users/commands/update-user-purchased-courses/update-user-purchased-courses.command';
 import { CoursePurchasedEvent } from './events/course-purchased/course-purchased.event';
-import { FindCourseLessonsCount } from './queries/find-course-lessons-count/find-course-lessons-count.query';
 import { FindCourseReviewsCountQuery } from './queries/find-course-reviews-count/find-course-reviews-count.query';
+import { FindCourseStudentsQuery } from './queries/find-course-students/find-course-students.query';
+import { FindCourseOwnerQuery } from './queries/find-course-owner/find-course-owner.query';
+import { FindCourseLessonsQuery } from './queries/find-course-lessons/find-course-lessons.query';
+import { FindCourseLessonsCountQuery } from './queries/find-course-lessons-count/find-course-lessons-count.query';
+import { FindCourseReviewsQuery } from './queries/find-course-reviews/find-course-reviews.query';
 
 @Injectable()
 export class CoursesService {
@@ -59,11 +59,11 @@ export class CoursesService {
   }
 
   findCourseOwner(id: number) {
-    return this.queryBus.execute(new FindCourseOwner(id));
+    return this.queryBus.execute(new FindCourseOwnerQuery(id));
   }
 
   findCourseStudents(id: number) {
-    return this.queryBus.execute(new FindCourseStudents(id));
+    return this.queryBus.execute(new FindCourseStudentsQuery(id));
   }
 
   findPurchasedCourse(purchasedCourseId: number) {
@@ -80,15 +80,15 @@ export class CoursesService {
   }
 
   findCourseLessons(id: number, page?: number, limit?: number) {
-    return this.queryBus.execute(new FindCourseLessons(id, page, limit));
+    return this.queryBus.execute(new FindCourseLessonsQuery(id, page, limit));
   }
 
   findCourseLessonsCount(id: number) {
-    return this.queryBus.execute(new FindCourseLessonsCount(id));
+    return this.queryBus.execute(new FindCourseLessonsCountQuery(id));
   }
 
   findCourseReviews(id: number, page?: number, limit?: number) {
-    return this.queryBus.execute(new FindCourseReviews(id, page, limit));
+    return this.queryBus.execute(new FindCourseReviewsQuery(id, page, limit));
   }
 
   findCourseReviewsCount(id: number) {

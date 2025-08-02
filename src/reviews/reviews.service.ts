@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateReviewInput } from './dto/create-review.input';
 import { UpdateReviewInput } from './dto/update-review.input';
 import { QueryBus } from '@nestjs/cqrs';
-import { FindReviewOwner } from './queries/find-review-owner/find-review-owner.query';
+import { FindReviewOwnerQuery } from './queries/find-review-owner/find-review-owner.query';
 
 @Injectable()
 export class ReviewsService {
@@ -29,6 +29,6 @@ export class ReviewsService {
   }
 
   findReviewOwner(id: number) {
-    return this.queryBus.execute(new FindReviewOwner(id));
+    return this.queryBus.execute(new FindReviewOwnerQuery(id));
   }
 }
